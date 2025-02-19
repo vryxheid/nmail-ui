@@ -5,9 +5,12 @@
 ::ng-deep {
   #inbox-table {
     tr.unread {
-      background-color: var(--p-primary-900);
+      background-color: var(--p-primary-950);
       color: var(--primary-color-text);
       font-weight: 700;
+      &.p-datatable-row-selected {
+        background-color: var(--p-datatable-row-selected-background);
+      }
     }
   }
 
