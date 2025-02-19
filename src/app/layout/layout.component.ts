@@ -31,6 +31,8 @@ interface MenuItem {
 export class LayoutComponent {
   expanded = true;
 
+  darkModeActive = true;
+
   menuItems: MenuItem[] = [
     {
       label: 'Inbox',
@@ -118,6 +120,7 @@ export class LayoutComponent {
   }
 
   toggleDarkMode() {
+    this.darkModeActive = !this.darkModeActive;
     const element = document.querySelector('html');
     element?.classList.toggle('nmail-dark');
   }
