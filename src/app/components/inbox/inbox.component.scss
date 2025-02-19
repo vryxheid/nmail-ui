@@ -1,0 +1,13 @@
+.inbox-table-container {
+  height: calc(100vh - var(--navbar-height));
+}
+
+::ng-deep {
+  #inbox-table {
+    tr.unread {
+      background-color: var(--p-primary-900);
+      color: var(--primary-color-text);
+      font-weight: 700;
+    }
+  }
+}

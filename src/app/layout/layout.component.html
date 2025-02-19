@@ -1,0 +1,78 @@
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar" [class.sidebar-collapsed]="!expanded">
+    <div class="sidebar-header">
+      <a href="#" class="sidebar-logo"
+        ><i
+          class="pi pi-envelope"
+          [style]="expanded ? 'margin-right: 10px' : 'margin-rght:0'"
+        ></i
+        >{{ expanded ? "NMail" : "NM" }}</a
+      >
+    </div>
+    <div class="sidebar-menu">
+      <ul>
+        @for(item of menuItems; track item){
+        <li class="sidebar-menu-item">
+          <a
+            [routerLink]="item.routerLink"
+            class="sidebar-item"
+            [ngClass]="{
+              'has-children': item.children,
+              'menu-item-open': item.children && item.isOpen,
+              'menu-item-active': isActive(item.routerLink)
+            }"
+            (click)="toggleMenuItem(item)"
+          >
+            <i [class]="item.icon"></i>
+            <span class="sidebar-item-text">{{ item.label }}</span>
+            <i
+              *ngIf="item.children && expanded"
+              class="pi pi-angle-down sidebar-item-arrow"
+              [ngClass]="{ rotated: item.isOpen }"
+            ></i>
+          </a>
+
+          <ul
+            *ngIf="item.children && expanded && item.isOpen"
+            class="sidebar-submenu"
+          >
+            <li *ngFor="let child of item.children">
+              <a href="#" class="sidebar-item sidebar-subitem">
+                <i [class]="child.icon"></i>
+                <span class="sidebar-item-text">{{ child.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="toggle-btn">
+      <!-- Toggle Button -->
+      <p-button
+        [icon]="
+          expanded ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'
+        "
+        (onClick)="toggleSidebar()"
+      ></p-button>
+    </div>
+  </div>
+
+  <div class="not-menu-container">
+    <!-- Navbar -->
+    <div class="topnav">
+      <!-- <a href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a> -->
+      <a class="right"
+        ><p-button icon="pi pi-moon" (onClick)="toggleDarkMode()" size="small"
+      /></a>
+    </div>
+
+    <!-- Page Content -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup" class="user-form">
+  <h2>Register</h2>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <input pInputText id="name" formControlName="name" autocomplete="off" />
+      <label for="name">Name</label>
+    </p-floatlabel>
+  </div>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <input pInputText id="email" formControlName="email" autocomplete="off" />
+      <label for="email">Email</label>
+    </p-floatlabel>
+  </div>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <p-password
+        formControlName="password"
+        [feedback]="false"
+        inputId="password"
+      />
+      <label for="password">Password</label>
+    </p-floatlabel>
+  </div>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <p-password
+        formControlName="repeatPassword"
+        [feedback]="false"
+        inputId="repeatPassword"
+      />
+      <label for="repeatPassword">Repeat Password</label>
+    </p-floatlabel>
+  </div>
+  <div class="submit-btn">
+    <p-button label="Register" (onClick)="submit()" />
+  </div>
+</form>

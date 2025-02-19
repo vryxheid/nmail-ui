@@ -1,0 +1,17 @@
+.user-form {
+  width: 30%;
+  padding: 10px;
+}
+
+.field {
+  margin: 10px;
+}
+.submit-btn {
+  margin-top: 20px;
+}
+
+:ng-host {
+  .p-inputtext {
+    width: 100%;
+  }
+}

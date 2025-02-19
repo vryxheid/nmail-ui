@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "subject": "Meeting Reminder",
+    "body": "Hello,\n\nThis is a reminder for our meeting scheduled for tomorrow at 10 AM.\n\nBest,\nAlice",
+    "sender": "alice@example.com",
+    "date": "2023-02-01T15:30:00Z",
+    "read": false,
+    "recipient": "test1@mail.com"
+  },
+  {
+    "id": 2,
+    "subject": "Project Update",
+    "body": "Hi Team,\n\nThe latest updates on the project have been uploaded to the shared drive.\n\nRegards,\nMark",
+    "sender": "mark@example.com",
+    "date": "2024-01-30T09:15:00Z",
+    "read": true,
+    "recipient": "test2@mail.com"
+  },
+  {
+    "id": 3,
+    "subject": "Invoice #45678",
+    "body": "Dear Customer,\n\nPlease find attached the invoice for your recent purchase. Let us know if you have any questions.\n\nThank you,\nBilling Team",
+    "sender": "billing@example.com",
+    "date": "2024-01-28T18:45:00Z",
+    "read": false,
+    "recipient": "test1@mail.com"
+  },
+  {
+    "id": 4,
+    "subject": "Job Application Received",
+    "body": "Dear Applicant,\n\nWe have received your job application and will review it shortly.\n\nBest regards,\nHR Team",
+    "sender": "hr@example.com",
+    "date": "2024-01-27T12:00:00Z",
+    "read": true,
+    "recipient": "test2@mail.com"
+  },
+  {
+    "id": 5,
+    "subject": "Happy Birthday!",
+    "body": "Dear Sarah,\n\nWishing you a fantastic birthday filled with joy and laughter!\n\nBest wishes,\nEmily",
+    "sender": "emily@example.com",
+    "date": "2024-01-25T08:30:00Z",
+    "read": true,
+    "recipient": "test1@mail.com"
+  },
+  {
+    "id": 6,
+    "subject": "Flight Itinerary",
+    "body": "Dear Passenger,\n\nAttached is your flight itinerary for your upcoming trip. Please review the details carefully.\n\nSafe travels,\nAirline Team",
+    "sender": "airline@example.com",
+    "date": "2024-01-22T14:20:00Z",
+    "read": false,
+    "recipient": "test2@mail.com"
+  },
+  {
+    "id": 7,
+    "subject": "Subscription Renewal Notice",
+    "body": "Dear Subscriber,\n\nYour subscription is due for renewal. Please update your payment details.\n\nThank you,\nSupport Team",
+    "sender": "support@example.com",
+    "date": "2024-01-20T10:10:00Z",
+    "read": true,
+    "recipient": "test1@mail.com"
+  },
+  {
+    "id": 8,
+    "subject": "Event Invitation",
+    "body": "Hi Alex,\n\nYou're invited to our annual company event! RSVP by Friday.\n\nBest,\nEvent Team",
+    "sender": "events@example.com",
+    "date": "2024-01-18T17:45:00Z",
+    "read": false,
+    "recipient": "test2@mail.com"
+  },
+  {
+    "id": 9,
+    "subject": "New Blog Post Published",
+    "body": "Hello Readers,\n\nCheck out our latest blog post on productivity tips!\n\nBest,\nBlog Team",
+    "sender": "blog@example.com",
+    "date": "2024-01-16T09:00:00Z",
+    "read": true,
+    "recipient": "test1@mail.com"
+  },
+  {
+    "id": 10,
+    "subject": "Security Alert",
+    "body": "Dear User,\n\nWe've detected a new login attempt from an unknown device. If this wasn't you, reset your password immediately.\n\nBest,\nSecurity Team",
+    "sender": "security@example.com",
+    "date": "2024-01-14T22:15:00Z",
+    "read": true,
+    "recipient": "test2@mail.com"
+  },
+  {
+    "id": 11,
+    "subject": "Monthly Newsletter",
+    "body": "Hi there,\n\nCheck out this month's top stories and updates!\n\nBest,\nNewsletter Team",
+    "sender": "newsletter@example.com",
+    "date": "2024-01-12T11:30:00Z",
+    "read": true,
+    "recipient": "reader@example.com"
+  },
+  {
+    "id": 12,
+    "subject": "Your Order Has Shipped",
+    "body": "Dear Customer,\n\nYour order #789123 has been shipped! Track your package with the link below.\n\nThank you,\nStore Team",
+    "sender": "store@example.com",
+    "date": "2024-01-10T15:00:00Z",
+    "read": true,
+    "recipient": "customer@example.com"
+  },
+  {
+    "id": 13,
+    "subject": "Password Reset Request",
+    "body": "Hi,\n\nWe received a request to reset your password. Click the link below to proceed.\n\nBest,\nSupport Team",
+    "sender": "support@example.com",
+    "date": "2024-01-08T20:45:00Z",
+    "read": true,
+    "recipient": "user@example.com"
+  },
+  {
+    "id": 14,
+    "subject": "Feedback Request",
+    "body": "Hello,\n\nWe’d love to hear your thoughts about your recent experience with our service. Please fill out this short survey.\n\nThank you,\nCustomer Service",
+    "sender": "feedback@example.com",
+    "date": "2024-01-06T13:25:00Z",
+    "read": true,
+    "recipient": "client@example.com"
+  },
+  {
+    "id": 15,
+    "subject": "Reminder: Bill Due Soon",
+    "body": "Dear Customer,\n\nYour bill is due on January 10th. Please make a payment to avoid service interruption.\n\nBest,\nBilling Team",
+    "sender": "billing@example.com",
+    "date": "2024-01-04T18:10:00Z",
+    "read": true,
+    "recipient": "customer@example.com"
+  },
+  {
+    "id": 16,
+    "subject": "New Course Available",
+    "body": "Hi Student,\n\nA new course on AI is now available in our learning portal. Enroll today!\n\nBest,\nEducation Team",
+    "sender": "education@example.com",
+    "date": "2024-01-02T09:50:00Z",
+    "read": false,
+    "recipient": "student@example.com"
+  },
+  {
+    "id": 17,
+    "subject": "Thank You for Your Purchase",
+    "body": "Dear Customer,\n\nThank you for shopping with us! Your order confirmation is attached.\n\nBest,\nSales Team",
+    "sender": "sales@example.com",
+    "date": "2023-12-30T16:30:00Z",
+    "read": true,
+    "recipient": "buyer@example.com"
+  },
+  {
+    "id": 18,
+    "subject": "Team Meeting Notes",
+    "body": "Hi Team,\n\nAttached are the meeting notes from our last discussion. Let me know if you have any questions.\n\nBest,\nManager",
+    "sender": "manager@example.com",
+    "date": "2023-12-28T12:45:00Z",
+    "read": true,
+    "recipient": "team@example.com"
+  },
+  {
+    "id": 19,
+    "subject": "Exclusive Discount for You!",
+    "body": "Dear Valued Customer,\n\nEnjoy an exclusive 20% discount on your next purchase. Use code WELCOME20 at checkout.\n\nHappy shopping,\nMarketing Team",
+    "sender": "marketing@example.com",
+    "date": "2023-12-26T08:00:00Z",
+    "read": true,
+    "recipient": "customer@example.com"
+  },
+  {
+    "id": 20,
+    "subject": "Holiday Greetings",
+    "body": "Dear Friends,\n\nWishing you a joyful holiday season and a happy new year!\n\nWarm regards,\nThe Team",
+    "sender": "team@example.com",
+    "date": "2023-12-24T19:30:00Z",
+    "read": true,
+    "recipient": "all@example.com"
+  }
+]

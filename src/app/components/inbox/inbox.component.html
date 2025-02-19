@@ -1,0 +1,60 @@
+<div class="inbox-table-container">
+  <p-toolbar [style]="{ 'background-color': 'transparent', border: 'none' }">
+    <ng-template #start>
+      <p-checkbox
+        [(ngModel)]="allSelected"
+        [binary]="true"
+        (onChange)="onSelectAllChanged($event)"
+      ></p-checkbox>
+      <!-- <p-button icon="pi pi-plus" class="mr-2" text severity="secondary" />
+            <p-button icon="pi pi-print" class="mr-2" text severity="secondary" />
+            <p-button icon="pi pi-upload" text severity="secondary" /> -->
+    </ng-template>
+    <!-- <ng-template #center>
+            <p-iconfield iconPosition="left">
+                <p-inputicon styleClass="pi pi-search" />
+                <input type="text" pInputText placeholder="Search" />
+            </p-iconfield>
+        </ng-template>
+        <ng-template #end>
+            <p-splitbutton label="Save" [model]="items" />
+        </ng-template> -->
+  </p-toolbar>
+  <p-table
+    [value]="messages"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
+    scrollHeight="flex"
+    id="inbox-table"
+    selectionMode="multiple"
+    [(selection)]="selectedMessages"
+  >
+    <!-- <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Subject</th>
+        <th>Sender</th>
+        <th>Date</th>
+      </tr>
+    </ng-template> -->
+    <ng-template #body let-message>
+      <tr [class.unread]="!message.read" [pSelectableRow]="message">
+        <td>
+          <p-tableCheckbox [value]="message" />
+        </td>
+        <td>
+          <i
+            [class]="
+              message.read
+                ? 'fa-regular fa-envelope-open'
+                : 'fa-regular fa-envelope'
+            "
+          ></i>
+        </td>
+        <td>{{ message.subject }}</td>
+        <td>from: {{ message.sender }}</td>
+        <td>{{ message.date | date : "short" }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

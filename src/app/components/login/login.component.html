@@ -1,0 +1,23 @@
+<form [formGroup]="formGroup" class="user-form">
+  <h2>Log In</h2>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <input pInputText id="email" formControlName="email" autocomplete="off" />
+      <label for="email">Email</label>
+    </p-floatlabel>
+  </div>
+  <div class="field">
+    <p-floatlabel variant="on">
+      <p-password
+        formControlName="password"
+        [feedback]="false"
+        inputId="password"
+      />
+      <label for="password">Password</label>
+    </p-floatlabel>
+  </div>
+
+  <div class="submit-btn">
+    <p-button label="Log In" (onClick)="submit()" />
+  </div>
+</form>

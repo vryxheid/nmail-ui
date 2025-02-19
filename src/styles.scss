@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+@font-face {
+  font-family: "Share Tech Mono";
+  src: url("./assets/fonts/ShareTechMono-Regular.ttf");
+}
+
+:root {
+  --background-color: #303444;
+  --background-color-light: #383c4c;
+
+  --navbar-height: 50px;
+}
+
+html {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  body {
+    margin: 0;
+  }
+}
