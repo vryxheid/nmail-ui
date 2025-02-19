@@ -28,9 +28,9 @@
 
   .sidebar-header {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    padding: 1.5rem;
+    padding: 0.5rem 1rem;
     position: relative;
   }
 
@@ -139,14 +139,13 @@
     background-color: var(--background-color-light);
     overflow: hidden;
     height: var(--navbar-height);
-    padding: 2px;
 
     /* Style the links inside the navigation bar */
     a {
       float: left;
       color: var(--p-primary-500);
       text-align: center;
-      padding: 14px 16px;
+      padding: 10px 10px;
       text-decoration: none;
       font-size: 17px;
     }
