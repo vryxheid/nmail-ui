@@ -109,8 +109,14 @@
   &.sidebar-collapsed {
     width: 60px;
 
+    .sidebar-header {
+      padding: 0;
+    }
+
     .sidebar-menu-item {
       position: static;
+      display: flex;
+      justify-content: center;
     }
 
     .sidebar-item {
