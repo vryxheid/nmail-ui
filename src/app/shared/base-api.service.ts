@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import * as MockData from '../../assets/mock-data/mock-data';
+import { RegisterUserRequest, User } from './model/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +21,36 @@ export class BaseApiService {
     return fetchedValue;
   }
 
-  getUsers(): Observable<any> {
+  getUsers(): Observable<User[]> {
     return this.fetchOrMock(
-      this.httpClient.get('/api/users'),
-      of(MockData.mockUsers)
+      this.httpClient.get<User[]>('/api/users'),
+      of(MockData.mockUsers).pipe(
+        map((usersAsJson) =>
+          usersAsJson.map(
+            (userAsJson) =>
+              ({
+                ...userAsJson,
+                lastLogIn: new Date(userAsJson.lastLogIn),
+              } as User)
+          )
+        )
+      )
+    );
+  }
+
+  registerUser(registerUserRequest: RegisterUserRequest): Observable<User> {
+    return this.fetchOrMock(
+      this.httpClient.post<User>('/api/user', registerUserRequest),
+      of(MockData.mockUsers).pipe(
+        map((data: any[]) => data[0]!),
+        map(
+          (userAsJson) =>
+            ({
+              ...userAsJson,
+              lastLogIn: new Date(userAsJson.lastLogIn),
+            } as User)
+        )
+      )
     );
   }
 }

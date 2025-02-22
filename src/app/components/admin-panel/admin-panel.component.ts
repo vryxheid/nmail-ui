@@ -12,9 +12,10 @@ import { TableModule } from 'primeng/table';
 export class AdminPanelComponent implements OnInit {
   users: any[] = [];
   selectedUsers: any[] = [];
-  constructor(private BaseApiService: BaseApiService) {}
+  constructor(private baseApiService: BaseApiService) {}
   ngOnInit(): void {
-    this.BaseApiService.getUsers()
+    this.baseApiService
+      .getUsers()
       .pipe(
         tap((data) => {
           this.users = data;

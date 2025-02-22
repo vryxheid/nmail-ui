@@ -11,12 +11,11 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  transition: all 0.3s ease-in-out;
   overflow-x: hidden;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: var(--background-color-light);
   border-right: 1px solid var(--background-color-light);
-  transition: width 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   width: 250px;
 
   .toggle-btn {
@@ -169,7 +168,6 @@
   }
 
   .content {
-    flex-grow: 1;
     height: calc(100vh - var(--navbar-height));
     padding: 2px;
     background-color: var(--background-color);
