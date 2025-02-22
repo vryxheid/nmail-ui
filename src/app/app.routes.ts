@@ -4,6 +4,7 @@ import { InboxComponent } from './components/inbox/inbox.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
       { path: 'inbox', component: InboxComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      // { path: 'sent', component: SentComponent },
+      { path: 'admin', component: AdminPanelComponent },
       // { path: 'drafts', component: DraftsComponent },
       // { path: 'trash', component: TrashComponent },
       // { path: 'spam', component: SpamComponent },

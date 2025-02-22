@@ -92,6 +92,7 @@ export class LayoutComponent {
       isOpen: false,
       routerLink: ['/register'],
     },
+    { label: 'Admin Panel', icon: 'pi pi-users', routerLink: ['/admin'] },
   ];
 
   constructor(private router: Router) {}

@@ -1,0 +1,34 @@
+<div class="admin-panel-container">
+  <p-table
+    [value]="users"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
+    scrollHeight="flex"
+    id="inbox-table"
+    selectionMode="multiple"
+    [(selection)]="selectedUsers"
+  >
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Last Login</th>
+        <th>Is Super Admin</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-user>
+      <tr [class.unread]="!user.read" [pSelectableRow]="user">
+        <td>
+          <p-tableCheckbox [value]="user" />
+        </td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.lastLogIn }}</td>
+        <td>{{ user.superAdmin ? "Yes" : "No" }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
