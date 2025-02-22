@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import mockMessages from '../../../assets/mock-messages.json';
+import mockMessages from '../../../assets/mock-data/mock-messages.json';
 import { TableModule } from 'primeng/table';
 import { DatePipe } from '@angular/common';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';

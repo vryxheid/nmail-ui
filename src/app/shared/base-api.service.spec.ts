@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NMailApiService } from './nmail-api.service';
+import { BaseApiService } from './base-api.service';
 
-describe('NMailApiService', () => {
-  let service: NMailApiService;
+describe('BaseApiService', () => {
+  let service: BaseApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NMailApiService);
+    service = TestBed.inject(BaseApiService);
   });
 
   it('should be created', () => {

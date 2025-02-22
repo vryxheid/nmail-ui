@@ -4,27 +4,31 @@
     "email": "test1@mail.com",
     "password": "1234",
     "phone": "123-456-7890",
-    "lastLogIn": "2024-01-30T09:15:00Z"
+    "lastLogIn": "2024-01-30T09:15:00Z",
+    "superAdmin": true
   },
   {
     "name": "User Two",
     "email": "test2@mail.com",
     "password": "1234",
     "phone": "987-654-3210",
-    "lastLogIn": "2023-12-30T09:15:00Z"
+    "lastLogIn": "2023-12-30T09:15:00Z",
+    "superAdmin": false
   },
   {
     "name": "User Three",
     "email": "user3@mail.com",
     "password": "1234",
     "phone": "555-123-4567",
-    "lastLogIn": "2024-01-30T10:15:00Z"
+    "lastLogIn": "2024-01-30T10:15:00Z",
+    "superAdmin": false
   },
   {
     "name": "User Four",
     "email": "user4@mail.com",
     "password": "1234",
     "phone": "555-987-6543",
-    "lastLogIn": "2024-01-27T09:15:00Z"
+    "lastLogIn": "2024-01-27T09:15:00Z",
+    "superAdmin": false
   }
 ]

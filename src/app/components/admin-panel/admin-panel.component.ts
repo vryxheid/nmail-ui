@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NMailApiService } from '../../shared/nmail-api.service';
+import { BaseApiService } from '../../shared/base-api.service';
 import { tap } from 'rxjs';
 import { TableModule } from 'primeng/table';
 
@@ -12,9 +12,9 @@ import { TableModule } from 'primeng/table';
 export class AdminPanelComponent implements OnInit {
   users: any[] = [];
   selectedUsers: any[] = [];
-  constructor(private NMailApiService: NMailApiService) {}
+  constructor(private BaseApiService: BaseApiService) {}
   ngOnInit(): void {
-    this.NMailApiService.getUsers()
+    this.BaseApiService.getUsers()
       .pipe(
         tap((data) => {
           this.users = data;
