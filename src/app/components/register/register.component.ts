@@ -12,7 +12,7 @@ import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { BaseApiService } from '../../shared/base-api.service';
+import { BaseApiService } from '../../shared/api/base-api.service';
 import { RegisterUserRequest } from '../../shared/model/user.model';
 import { MessageModule } from 'primeng/message';
 import { Router } from '@angular/router';

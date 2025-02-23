@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseApiService } from '../../shared/base-api.service';
+import { BaseApiService } from '../../shared/api/base-api.service';
 import { tap } from 'rxjs';
 import { TableModule } from 'primeng/table';
 
