@@ -26,8 +26,6 @@
     [scrollable]="true"
     scrollHeight="flex"
     id="inbox-table"
-    selectionMode="multiple"
-    [(selection)]="selectedMessages"
   >
     <!-- <ng-template #header>
       <tr>
@@ -38,10 +36,14 @@
       </tr>
     </ng-template> -->
     <ng-template #body let-message>
-      <tr [class.unread]="!message.read" [pSelectableRow]="message">
+      <tr
+        [class.unread]="!sentInbox && !message.read"
+        [pSelectableRow]="message"
+      >
         <td>
           <p-tableCheckbox [value]="message" />
         </td>
+        @if (!sentInbox) {
         <td>
           <i
             [class]="
@@ -51,6 +53,7 @@
             "
           ></i>
         </td>
+        }
         <td>{{ message.subject }}</td>
         <td>from: {{ message.senderId }}</td>
         <td>{{ message.date | date : "short" }}</td>

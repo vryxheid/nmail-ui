@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { tap } from 'rxjs';
 import { Message } from '../../shared/model/message.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inbox',
@@ -18,16 +19,29 @@ export class InboxComponent implements OnInit {
   public messages: Message[] = [];
   public selectedMessages: Message[] = [];
   public allSelected: boolean = false;
-  constructor(private baseApiService: BaseApiService) {}
+  public sentInbox: boolean = false;
+  constructor(private baseApiService: BaseApiService, private router: Router) {}
   ngOnInit(): void {
-    this.baseApiService
-      .getMessages(4)
-      .pipe(
-        tap((messages) => {
-          this.messages = messages;
-        })
-      )
-      .subscribe();
+    if (this.router.url === '/sent') {
+      this.sentInbox = true;
+      this.baseApiService
+        .getSentMessages(1)
+        .pipe(
+          tap((messages) => {
+            this.messages = messages;
+          })
+        )
+        .subscribe();
+    } else {
+      this.baseApiService
+        .getMessages(1)
+        .pipe(
+          tap((messages) => {
+            this.messages = messages;
+          })
+        )
+        .subscribe();
+    }
   }
   onSelectAllChanged(e: CheckboxChangeEvent) {
     if (e.checked) {
@@ -35,5 +49,9 @@ export class InboxComponent implements OnInit {
     } else {
       this.selectedMessages = [];
     }
+  }
+
+  openMessage(e: any) {
+    console.log(e);
   }
 }

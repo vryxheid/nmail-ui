@@ -1,0 +1,32 @@
+<div class="admin-panel-container">
+  <p-table
+    [value]="contacts"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
+    scrollHeight="flex"
+    id="inbox-table"
+    selectionMode="multiple"
+    [(selection)]="selectedContacts"
+  >
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Is Favourite</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-contact>
+      <tr [class.unread]="!contact.read" [pSelectableRow]="contact">
+        <td>
+          <p-tableCheckbox [value]="contact" />
+        </td>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.email }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>{{ contact.favourite ? "Yes" : "No" }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

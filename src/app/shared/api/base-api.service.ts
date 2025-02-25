@@ -4,6 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import * as MockData from '../../../assets/mock-data/mock-data';
 import { RegisterUserRequest, User } from '../model/user.model';
 import { Message } from '../model/message.model';
+import { Contact } from '../model/contact.model';
 
 @Injectable({
   providedIn: 'root',
@@ -80,7 +81,37 @@ export class BaseApiService {
     );
   }
 
+  public getSentMessages(userId: number): Observable<Message[]> {
+    return this.fetchOrMock(
+      this.httpClient.get<Message[]>('/api/sent/' + userId),
+      of(MockData.mockMessages).pipe(
+        map((messagesAsJson) => {
+          return messagesAsJson.map(
+            (messageAsJson) =>
+              ({
+                ...messageAsJson,
+                date: new Date(messageAsJson.date),
+              } as Message)
+          );
+        })
+      )
+    );
+  }
+
   //====================================================================================================================
   // CONTACT
   //====================================================================================================================
+  public getContacts(userId: number): Observable<Contact[]> {
+    return this.fetchOrMock(
+      this.httpClient.get<Contact[]>('/api/contacts/' + userId),
+      of(MockData.mockContacts)
+    );
+  }
+
+  public getContactById(contactId: number): Observable<Contact> {
+    return this.fetchOrMock(
+      this.httpClient.get<Contact>('/api/contact/' + contactId),
+      of(MockData.mockContacts[0])
+    );
+  }
 }

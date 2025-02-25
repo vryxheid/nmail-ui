@@ -1,0 +1,13 @@
+<p-panel>
+  <ng-template #header>
+    <div class="flex items-center gap-2">
+      <!-- <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" /> -->
+      @if (contact) {
+      <span class="font-bold">{{ contact.email }}</span>
+      }@else {
+      <span>{{ message.senderId }}</span>
+      }
+      <span>{{ message.subject }}</span>
+    </div>
+  </ng-template>
+</p-panel>

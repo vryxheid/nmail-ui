@@ -65,12 +65,6 @@ export class LayoutComponent {
       routerLink: ['/trash'],
     },
     {
-      label: 'Settings',
-      icon: 'pi pi-cog',
-      isOpen: false,
-      routerLink: ['/settings'],
-    },
-    {
       icon: 'pi pi-home',
       label: 'Group',
       isOpen: false,
@@ -79,6 +73,12 @@ export class LayoutComponent {
         { icon: 'pi pi-trash', label: 'Analytics', routerLink: [] },
         { icon: 'pi pi-cog', label: 'Projects', routerLink: [] },
       ],
+    },
+
+    {
+      label: 'Contacts',
+      icon: 'pi pi-address-book',
+      routerLink: ['/contacts'],
     },
     {
       label: 'Log In',
@@ -92,7 +92,13 @@ export class LayoutComponent {
       isOpen: false,
       routerLink: ['/register'],
     },
-    { label: 'Admin Panel', icon: 'pi pi-users', routerLink: ['/admin'] },
+    {
+      label: 'Settings',
+      icon: 'pi pi-cog',
+      isOpen: false,
+      routerLink: ['/settings'],
+    },
+    { label: 'Admin Panel', icon: 'pi pi-wrench', routerLink: ['/admin'] },
   ];
 
   constructor(private router: Router) {}
