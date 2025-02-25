@@ -26,6 +26,8 @@
     [scrollable]="true"
     scrollHeight="flex"
     id="inbox-table"
+    selectionMode="multiple"
+    [(selection)]="selectedMessages"
   >
     <!-- <ng-template #header>
       <tr>
