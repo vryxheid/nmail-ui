@@ -9,6 +9,9 @@ import { tap } from 'rxjs';
 import { Message } from '../../shared/model/message.model';
 import { Router } from '@angular/router';
 
+class MessageDisplay extends Message {
+  public isSelected!: boolean;
+}
 @Component({
   selector: 'app-inbox',
   imports: [TableModule, DatePipe, CheckboxModule, ToolbarModule, FormsModule],
@@ -16,8 +19,8 @@ import { Router } from '@angular/router';
   styleUrl: './inbox.component.scss',
 })
 export class InboxComponent implements OnInit {
-  public messages: Message[] = [];
-  public selectedMessages: Message[] = [];
+  // public messages: Message[] = [];
+  public messages: MessageDisplay[] = [];
   public allSelected: boolean = false;
   public sentInbox: boolean = false;
   constructor(private baseApiService: BaseApiService, private router: Router) {}
@@ -28,7 +31,10 @@ export class InboxComponent implements OnInit {
         .getSentMessages(1)
         .pipe(
           tap((messages) => {
-            this.messages = messages;
+            this.messages = messages.map((item) => ({
+              ...item,
+              isSelected: false,
+            }));
           })
         )
         .subscribe();
@@ -37,21 +43,42 @@ export class InboxComponent implements OnInit {
         .getMessages(1)
         .pipe(
           tap((messages) => {
-            this.messages = messages;
+            this.messages = messages.map((item) => ({
+              ...item,
+              isSelected: false,
+            }));
           })
         )
         .subscribe();
     }
   }
+
   onSelectAllChanged(e: CheckboxChangeEvent) {
     if (e.checked) {
-      this.selectedMessages = this.messages;
+      this.messages = this.messages.map((msg) => ({
+        ...msg,
+        isSelected: true,
+      }));
     } else {
-      this.selectedMessages = [];
+      this.messages = this.messages.map((msg) => ({
+        ...msg,
+        isSelected: false,
+      }));
     }
   }
 
   openMessage(e: any) {
     console.log(e);
+  }
+
+  onCheckBoxClicked(event: CheckboxChangeEvent, messageId: number) {
+    const index = this.messages.map((msg) => msg.id).indexOf(messageId, 0);
+    if (index > -1) {
+      if (event.checked) {
+        this.messages[index].isSelected = true;
+      } else {
+        this.messages[index].isSelected = false;
+      }
+    }
   }
 }
