@@ -1,0 +1,7 @@
+::ng-deep {
+  #contacts-table {
+    tr.isSelected {
+      background-color: var(--p-datatable-row-selected-background);
+    }
+  }
+}

@@ -4,28 +4,39 @@
     [tableStyle]="{ 'min-width': '50rem' }"
     [scrollable]="true"
     scrollHeight="flex"
-    id="inbox-table"
-    selectionMode="multiple"
-    [(selection)]="selectedContacts"
+    id="contacts-table"
   >
     <ng-template #header>
       <tr>
         <th></th>
+        <th></th>
         <th>Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Is Favourite</th>
       </tr>
     </ng-template>
     <ng-template #body let-contact>
-      <tr [class.unread]="!contact.read" [pSelectableRow]="contact">
+      <tr
+        [class.isSelected]="contact.isSelected"
+        [id]="'contact-' + contact.data.id"
+      >
         <td>
-          <p-tableCheckbox [value]="contact" />
+          <p-checkbox
+            [binary]="true"
+            [(ngModel)]="contact.isSelected"
+            (onChange)="onCheckBoxClicked($event, contact.data.id)"
+          ></p-checkbox>
         </td>
-        <td>{{ contact.name }}</td>
-        <td>{{ contact.email }}</td>
-        <td>{{ contact.phone }}</td>
-        <td>{{ contact.favourite ? "Yes" : "No" }}</td>
+        <td>
+          <i
+            (click)="onToggleFavourite(contact)"
+            [class]="contact.data.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
+          ></i>
+        </td>
+
+        <td>{{ contact.data.name }}</td>
+        <td>{{ contact.data.email }}</td>
+        <td>{{ contact.data.phone }}</td>
       </tr>
     </ng-template>
   </p-table>

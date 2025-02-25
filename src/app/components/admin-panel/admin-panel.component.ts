@@ -3,10 +3,11 @@ import { BaseApiService } from '../../shared/api/base-api.service';
 import { tap } from 'rxjs';
 import { TableModule } from 'primeng/table';
 import { User } from '../../shared/model/user.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [TableModule],
+  imports: [TableModule, DatePipe],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss',
 })
