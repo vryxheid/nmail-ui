@@ -1,13 +1,27 @@
-<p-panel>
-  <ng-template #header>
-    <div class="flex items-center gap-2">
-      <!-- <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" /> -->
-      @if (contact) {
-      <span class="font-bold">{{ contact.email }}</span>
-      }@else {
-      <span>{{ message.senderId }}</span>
-      }
-      <span>{{ message.subject }}</span>
-    </div>
-  </ng-template>
-</p-panel>
+<div class="message-view-container">
+  <p-panel>
+    <ng-template #header id="message-view-header">
+      <div class="header-content">
+        <div class="header-content-left">
+          <!-- <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" /> -->
+
+          <div class="subject">{{ message.subject }}</div>
+          <div class="sender-info">
+            from:
+            <span class="sender-info-value">{{
+              contact
+                ? contact.name + " (" + contact.email + ")"
+                : message.senderId
+            }}</span>
+          </div>
+        </div>
+        <div class="header-content-right">
+          <div class="message-date">
+            {{ message.date | date : "dd MMM yyy, HH:mm" }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <p class="m-0" class [textContent]="message.body"></p>
+  </p-panel>
+</div>

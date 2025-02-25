@@ -6,6 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
+import { MessageViewComponent } from './components/message-view/message-view.component';
 
 export const routes: Routes = [
   {
@@ -18,7 +19,7 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent },
       { path: 'admin', component: AdminPanelComponent },
       { path: 'contacts', component: ContactsComponent },
-      // { path: 'trash', component: TrashComponent },
+      { path: 'message/:id', component: MessageViewComponent },
       // { path: 'spam', component: SpamComponent },
       // { path: 'settings', component: SettingsComponent },
       { path: '', redirectTo: 'inbox', pathMatch: 'full' }, // Default route

@@ -67,7 +67,7 @@ export class InboxComponent implements OnInit {
   }
 
   onRowClick(message: TableItem<Message>) {
-    console.log(message);
+    this.router.navigate(['/message/' + message.data.id]);
   }
 
   openMessage(e: any) {

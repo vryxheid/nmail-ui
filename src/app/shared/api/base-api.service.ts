@@ -98,6 +98,20 @@ export class BaseApiService {
     );
   }
 
+  public getMessageById(id: number): Observable<Message> {
+    return this.fetchOrMock(
+      this.httpClient.get<Message>('/api/message/' + id),
+      of(MockData.mockMessages[0]).pipe(
+        map(
+          (messageAsJson) =>
+            ({
+              ...messageAsJson,
+              date: new Date(messageAsJson.date),
+            } as Message)
+        )
+      )
+    );
+  }
   //====================================================================================================================
   // CONTACT
   //====================================================================================================================
