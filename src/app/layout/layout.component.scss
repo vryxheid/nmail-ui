@@ -171,7 +171,13 @@
     height: calc(100vh - var(--navbar-height));
     padding: 2px;
     background-color: var(--background-color);
-    overflow-y: hidden;
+    overflow-y: auto;
     padding: 10px;
+  }
+
+  .new-email-btn {
+    position: fixed;
+    right: 40px;
+    bottom: 25px;
   }
 }

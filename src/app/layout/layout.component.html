@@ -78,5 +78,14 @@
     <div class="content">
       <router-outlet></router-outlet>
     </div>
+
+    <!-- New email button -->
+    @if(isNewEmailBtnVisible()){
+    <p-button
+      icon="pi pi-plus"
+      class="new-email-btn"
+      (onClick)="openNewEmailWindow()"
+    ></p-button
+    >}
   </div>
 </div>

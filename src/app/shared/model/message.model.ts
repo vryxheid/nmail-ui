@@ -6,4 +6,5 @@ export class Message {
   recipientId!: number;
   date!: Date;
   read!: boolean;
+  isTrash!: boolean;
 }

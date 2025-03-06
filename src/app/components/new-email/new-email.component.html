@@ -1,0 +1,64 @@
+<h2>New Email</h2>
+<div class="message-view-container">
+  <form [formGroup]="formGroup" class="new-email-form">
+    <div class="new-email-header">
+      <div class="row recipient-row">
+        <span class="input-label">To:</span>
+        <p-autocomplete
+          multiple
+          formControlName="recipients"
+          [suggestions]="emailsContactsCurrentUser"
+          inputId="recipients"
+          fluid
+        ></p-autocomplete>
+      </div>
+      <div class="row subject-row">
+        <span class="input-label">Subject:</span>
+        <input
+          pInputText
+          id="subject"
+          formControlName="subject"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="new-email-content">
+      <textarea
+        pTextArea
+        rows="20"
+        cols="30"
+        pTextarea
+        formControlName="body"
+        style="resize: none; width: 100%; height: 100%"
+      ></textarea>
+    </div>
+  </form>
+  <div class="btns-container">
+    <div class="discard-btn">
+      <p-button
+        severity="secondary"
+        label="Discard"
+        iconPos="right"
+        icon="pi pi-trash"
+        (onClick)="discard()"
+      />
+    </div>
+    <div class="save-draft-btn">
+      <p-button
+        severity="secondary"
+        label="Save Draft"
+        iconPos="right"
+        icon="pi pi-file"
+        (onClick)="saveDraft()"
+      />
+    </div>
+    <div class="submit-btn">
+      <p-button
+        label="Send"
+        iconPos="right"
+        icon="pi pi-send"
+        (onClick)="submit()"
+      />
+    </div>
+  </div>
+</div>

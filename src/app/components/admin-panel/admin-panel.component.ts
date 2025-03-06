@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseApiService } from '../../shared/api/base-api.service';
-import { tap } from 'rxjs';
-import { TableModule } from 'primeng/table';
-import { User } from '../../shared/model/user.model';
 import { DatePipe } from '@angular/common';
+
+import { tap } from 'rxjs';
+
+import { BaseApiService } from '../../shared/api/base-api.service';
+import { User } from '../../shared/model/user.model';
+import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [TableModule, DatePipe],
+  imports: [DatePipe, PrimeNgModule],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss',
 })

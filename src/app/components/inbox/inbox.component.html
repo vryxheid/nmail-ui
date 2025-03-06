@@ -17,9 +17,10 @@
   >
     <ng-template #body let-message>
       <tr
-        [class.unread]="!sentInbox && !message.data.read"
+        [class.unread]="
+          !(inboxMode.toString() === 'Sent') && !message.data.read
+        "
         [class.isSelected]="message.isSelected"
-        (click)="onRowClick(message)"
       >
         <td>
           <p-checkbox
@@ -28,7 +29,7 @@
             (onChange)="onCheckBoxClicked($event, message.data.id)"
           ></p-checkbox>
         </td>
-        @if (!sentInbox) {
+        @if (!(inboxMode.toString() === 'Sent')) {
         <td>
           <i
             [class]="
@@ -39,7 +40,9 @@
           ></i>
         </td>
         }
-        <td>{{ message.data.subject }}</td>
+        <td (click)="onRowClick(message)" style="cursor: pointer">
+          {{ message.data.subject }}
+        </td>
         <td>from: {{ message.data.senderId }}</td>
         <td>{{ message.data.date | date : "dd MMM yyy, HH:mm" }}</td>
       </tr>

@@ -11,6 +11,9 @@ import { Contact } from '../model/contact.model';
 })
 export class BaseApiService {
   private LOAD_MOCK_DATA = false;
+
+  public contactsCurrentUser: Contact[] | null = null;
+
   constructor(private httpClient: HttpClient) {}
 
   private fetchOrMock<T>(
@@ -98,6 +101,23 @@ export class BaseApiService {
     );
   }
 
+  getMessagesInTrash(userId: number) {
+    return this.fetchOrMock(
+      this.httpClient.get<Message[]>('/api/trash/' + userId),
+      of(MockData.mockMessages).pipe(
+        map((messagesAsJson) => {
+          return messagesAsJson.map(
+            (messageAsJson) =>
+              ({
+                ...messageAsJson,
+                date: new Date(messageAsJson.date),
+              } as Message)
+          );
+        })
+      )
+    );
+  }
+
   public getMessageById(id: number): Observable<Message> {
     return this.fetchOrMock(
       this.httpClient.get<Message>('/api/message/' + id),
@@ -115,11 +135,16 @@ export class BaseApiService {
   //====================================================================================================================
   // CONTACT
   //====================================================================================================================
-  public getContacts(userId: number): Observable<Contact[]> {
-    return this.fetchOrMock(
-      this.httpClient.get<Contact[]>('/api/contacts/' + userId),
-      of(MockData.mockContacts)
-    );
+  public getContacts(userId: number, refresh = false): Observable<Contact[]> {
+    // If contacts were already fetched, no need to fetch again, except explicit request to refresh data
+    if (this.contactsCurrentUser && !refresh) {
+      return of(this.contactsCurrentUser);
+    } else {
+      return this.fetchOrMock(
+        this.httpClient.get<Contact[]>('/api/contacts/' + userId),
+        of(MockData.mockContacts)
+      );
+    }
   }
 
   public getContactById(contactId: number): Observable<Contact> {

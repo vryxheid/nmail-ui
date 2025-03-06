@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { tap } from 'rxjs';
+
 import {
   AbstractControl,
   FormControl,
@@ -8,31 +12,19 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { PasswordModule } from 'primeng/password';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
+
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { RegisterUserRequest } from '../../shared/model/user.model';
-import { MessageModule } from 'primeng/message';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({
   selector: 'app-register',
-  imports: [
-    ReactiveFormsModule,
-    PasswordModule,
-    FloatLabelModule,
-    InputTextModule,
-    ButtonModule,
-    MessageModule,
-  ],
+  imports: [ReactiveFormsModule, PrimeNgModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  formGroup!: FormGroup;
+  public formGroup!: FormGroup;
 
   constructor(private baseApiService: BaseApiService, private router: Router) {}
 

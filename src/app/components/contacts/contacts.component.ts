@@ -2,16 +2,16 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { tap } from 'rxjs';
-import { TableModule } from 'primeng/table';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 
 import { Contact } from '../../shared/model/contact.model';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { TableItem } from '../../shared/model/table-item.model';
+import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({
   selector: 'app-contacts',
-  imports: [TableModule, CheckboxModule, FormsModule],
+  imports: [CheckboxModule, FormsModule, PrimeNgModule],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss',
 })

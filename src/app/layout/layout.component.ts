@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { TieredMenuModule } from 'primeng/tieredmenu';
-import { SidebarModule } from 'primeng/sidebar';
-import { ButtonModule } from 'primeng/button';
-import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
+import { PrimeNgModule } from '../shared/primeng/primeng.module';
 
 interface MenuItem {
   icon: string;
@@ -16,24 +13,16 @@ interface MenuItem {
 
 @Component({
   selector: 'app-layout',
-  imports: [
-    RouterOutlet,
-    RouterModule,
-    TieredMenuModule,
-    MenuModule,
-    SidebarModule,
-    ButtonModule,
-    CommonModule,
-  ],
+  imports: [RouterOutlet, RouterModule, CommonModule, PrimeNgModule],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent {
-  expanded = true;
+  public expanded: boolean = true;
 
-  darkModeActive = true;
+  public darkModeActive = true;
 
-  menuItems: MenuItem[] = [
+  public menuItems: MenuItem[] = [
     {
       label: 'Inbox',
       icon: 'pi pi-inbox',
@@ -134,5 +123,15 @@ export class LayoutComponent {
 
   isActive(routerLink: string[]): boolean {
     return this.router.url === routerLink[0]; // Compare with current route
+  }
+
+  openNewEmailWindow() {
+    this.router.navigate(['/new-email']);
+  }
+
+  public isNewEmailBtnVisible(): boolean {
+    // To Do: also hide if not logged in
+    // To Do: Change in contacts view to "Add contact" button
+    return !(this.router.url === '/new-email');
   }
 }

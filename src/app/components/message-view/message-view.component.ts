@@ -3,15 +3,15 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { switchMap, tap } from 'rxjs';
-import { PanelModule } from 'primeng/panel';
 
 import { Message } from '../../shared/model/message.model';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../shared/model/contact.model';
+import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({
   selector: 'app-message-view',
-  imports: [PanelModule, DatePipe],
+  imports: [DatePipe, PrimeNgModule],
   templateUrl: './message-view.component.html',
   styleUrl: './message-view.component.scss',
 })
