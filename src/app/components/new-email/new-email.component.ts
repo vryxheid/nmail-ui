@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -11,7 +12,6 @@ import { tap } from 'rxjs';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../shared/model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-email',
@@ -39,7 +39,7 @@ export class NewEmailComponent implements OnInit {
     });
 
     this.baseApiService
-      .getContacts(1)
+      .getContacts()
       .pipe(
         tap((contacts: Contact[]) => {
           this.contactsCurrentUser = contacts;

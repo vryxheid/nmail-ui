@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { tap } from 'rxjs';
+
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 
 import { Contact } from '../../shared/model/contact.model';
@@ -22,7 +23,7 @@ export class ContactsComponent {
   constructor(private baseApiService: BaseApiService) {}
   ngOnInit(): void {
     this.baseApiService
-      .getContacts(1)
+      .getContacts()
       .pipe(
         tap((data) => {
           this.contacts = data.map((item) => ({

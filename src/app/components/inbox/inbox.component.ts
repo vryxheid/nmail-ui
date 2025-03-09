@@ -35,7 +35,7 @@ export class InboxComponent implements OnInit {
     if (this.router.url === '/sent') {
       this.inboxMode = InboxMode.Sent;
       this.baseApiService
-        .getSentMessages(1)
+        .getSentMessages()
         .pipe(
           tap((messages) => {
             this.messages = messages.map((item) => ({
@@ -48,7 +48,7 @@ export class InboxComponent implements OnInit {
     } else if (this.router.url === '/trash') {
       this.inboxMode = InboxMode.Trash;
       this.baseApiService
-        .getMessagesInTrash(1)
+        .getMessagesInTrash()
         .pipe(
           tap((messages) => {
             this.messages = messages.map((item) => ({
@@ -60,7 +60,7 @@ export class InboxComponent implements OnInit {
         .subscribe();
     } else {
       this.baseApiService
-        .getMessages(1)
+        .getMessages()
         .pipe(
           tap((messages) => {
             this.messages = messages.map((item) => ({

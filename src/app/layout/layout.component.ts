@@ -88,6 +88,7 @@ export class LayoutComponent {
       routerLink: ['/settings'],
     },
     { label: 'Admin Panel', icon: 'pi pi-wrench', routerLink: ['/admin'] },
+    { label: 'Log Out', icon: 'pi pi-sign-out', routerLink: ['/log-out'] },
   ];
 
   constructor(private router: Router) {}

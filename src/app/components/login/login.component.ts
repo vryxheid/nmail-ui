@@ -5,7 +5,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+
+import { tap } from 'rxjs';
+
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
+import { BaseApiService } from '../../shared/api/base-api.service';
+import { LS_JWT_TOKEN } from '../../shared/api/model/local-storage-variables';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +20,8 @@ import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 })
 export class LoginComponent implements OnInit {
   public formGroup!: FormGroup;
+
+  constructor(private baseApiService: BaseApiService) {}
 
   ngOnInit() {
     this.formGroup = new FormGroup({
@@ -29,7 +36,14 @@ export class LoginComponent implements OnInit {
       this.formGroup.get(key)?.markAsDirty();
     });
     if (this.formGroup.valid) {
-      console.log(this.formGroup);
+      this.baseApiService
+        .login(this.formGroup.value)
+        .pipe(
+          tap((jwtTocken: string) => {
+            localStorage.setItem(LS_JWT_TOKEN, jwtTocken);
+          })
+        )
+        .subscribe();
     }
   }
 }

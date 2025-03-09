@@ -1,10 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+
+import { catchError, map, Observable, of, throwError } from 'rxjs';
+
 import * as MockData from '../../../assets/mock-data/mock-data';
 import { RegisterUserRequest, User } from '../model/user.model';
 import { Message } from '../model/message.model';
 import { Contact } from '../model/contact.model';
+import { LoginRequest } from './model/login-request.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +18,10 @@ export class BaseApiService {
 
   public contactsCurrentUser: Contact[] | null = null;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   private fetchOrMock<T>(
     fetchedValue: Observable<T>,
@@ -23,7 +30,25 @@ export class BaseApiService {
     if (this.LOAD_MOCK_DATA) {
       return mockValue;
     }
-    return fetchedValue;
+    return fetchedValue.pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
   }
 
   //====================================================================================================================
@@ -50,7 +75,7 @@ export class BaseApiService {
     registerUserRequest: RegisterUserRequest
   ): Observable<User> {
     return this.fetchOrMock(
-      this.httpClient.post<User>('/api/user', registerUserRequest),
+      this.httpClient.post<User>('/auth/user', registerUserRequest),
       of(MockData.mockUsers).pipe(
         map((data: any[]) => data[0]!),
         map(
@@ -64,12 +89,18 @@ export class BaseApiService {
     );
   }
 
+  public login(loginRequest: LoginRequest): Observable<string> {
+    return this.fetchOrMock(
+      this.authService.login(loginRequest),
+      of('mockToken')
+    );
+  }
   //====================================================================================================================
   // MESSAGE
   //====================================================================================================================
-  public getMessages(userId: number): Observable<Message[]> {
+  public getMessages(): Observable<Message[]> {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/inbox/' + userId),
+      this.httpClient.get<Message[]>('/api/inbox'),
       of(MockData.mockMessages).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
@@ -84,9 +115,9 @@ export class BaseApiService {
     );
   }
 
-  public getSentMessages(userId: number): Observable<Message[]> {
+  public getSentMessages(): Observable<Message[]> {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/sent/' + userId),
+      this.httpClient.get<Message[]>('/api/sent'),
       of(MockData.mockMessages).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
@@ -101,9 +132,9 @@ export class BaseApiService {
     );
   }
 
-  getMessagesInTrash(userId: number) {
+  getMessagesInTrash() {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/trash/' + userId),
+      this.httpClient.get<Message[]>('/api/trash'),
       of(MockData.mockMessages).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
@@ -135,13 +166,13 @@ export class BaseApiService {
   //====================================================================================================================
   // CONTACT
   //====================================================================================================================
-  public getContacts(userId: number, refresh = false): Observable<Contact[]> {
+  public getContacts(refresh = false): Observable<Contact[]> {
     // If contacts were already fetched, no need to fetch again, except explicit request to refresh data
     if (this.contactsCurrentUser && !refresh) {
       return of(this.contactsCurrentUser);
     } else {
       return this.fetchOrMock(
-        this.httpClient.get<Contact[]>('/api/contacts/' + userId),
+        this.httpClient.get<Contact[]>('/api/contacts'),
         of(MockData.mockContacts)
       );
     }
