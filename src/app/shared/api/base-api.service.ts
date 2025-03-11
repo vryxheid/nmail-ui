@@ -9,6 +9,7 @@ import { Message } from '../../model/message.model';
 import { Contact } from '../../model/contact.model';
 import { LoginRequest } from './model/login-request.model';
 import { AuthService } from './auth.service';
+import { ToastService } from '../services/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class BaseApiService {
 
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   private fetchOrMock<T>(
@@ -30,25 +32,38 @@ export class BaseApiService {
     if (this.LOAD_MOCK_DATA) {
       return mockValue;
     }
-    return fetchedValue.pipe(catchError(this.handleError));
+    return fetchedValue.pipe(catchError(this.handleError.bind(this)));
   }
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
+      /* A client-side or network error occurred. Handle it accordingly. */
+
+      const errorMessage = 'An unexpected error occurred';
+
+      this.toastService.messages$.next({
+        detail: errorMessage,
+        summary: 'Error',
+        severity: 'danger',
+      });
+
+      // Return an observable with a user-facing error message.
+      return throwError(() => new Error(errorMessage));
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(
-        `Backend returned code ${error.status}, body was: `,
-        error.error
-      );
+      /* The backend returned an unsuccessful response code.
+      The response body may contain clues as to what went wrong. */
+
+      const errorMessage = `Backend returned error code ${error.status}`;
+
+      this.toastService.messages$.next({
+        detail: errorMessage,
+        summary: `Error ${error.status}`,
+        severity: 'error',
+      });
+
+      // Return an observable with a user-facing error message.
+      return throwError(() => new Error(errorMessage));
     }
-    // Return an observable with a user-facing error message.
-    return throwError(
-      () => new Error('Something bad happened; please try again later.')
-    );
   }
 
   //====================================================================================================================

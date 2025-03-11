@@ -6,7 +6,7 @@ import { tap } from 'rxjs';
 
 import { MessageService, ToastMessageOptions } from 'primeng/api';
 import { PrimeNgModule } from '../shared/primeng/primeng.module';
-import { ToastService } from '../services/toast.service';
+import { ToastService } from '../shared/services/toast.service';
 
 interface MenuItem {
   icon: string;
@@ -19,6 +19,7 @@ interface MenuItem {
 @Component({
   selector: 'app-layout',
   imports: [RouterOutlet, RouterModule, CommonModule, PrimeNgModule],
+  providers: [MessageService],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
