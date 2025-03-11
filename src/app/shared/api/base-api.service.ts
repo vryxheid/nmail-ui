@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 import * as MockData from '../../../assets/mock-data/mock-data';
-import { RegisterUserRequest, User } from '../model/user.model';
-import { Message } from '../model/message.model';
-import { Contact } from '../model/contact.model';
+import { RegisterUserRequest, User } from '../../model/user.model';
+import { Message } from '../../model/message.model';
+import { Contact } from '../../model/contact.model';
 import { LoginRequest } from './model/login-request.model';
 import { AuthService } from './auth.service';
 

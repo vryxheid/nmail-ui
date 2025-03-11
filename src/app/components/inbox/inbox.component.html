@@ -7,6 +7,14 @@
         (onChange)="onSelectAllChanged($event)"
       ></p-checkbox>
     </ng-template>
+    <ng-template #end>
+      <i
+        class="pi pi-sync"
+        [class.pi-spin]="isSynching"
+        (click)="onStartSync()"
+        style="color: var(--p-button-text-secondary-color)"
+      ></i>
+    </ng-template>
   </p-toolbar>
   <p-table
     [value]="messages"

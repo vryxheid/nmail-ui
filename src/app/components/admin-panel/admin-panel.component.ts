@@ -4,7 +4,7 @@ import { DatePipe } from '@angular/common';
 import { tap } from 'rxjs';
 
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { User } from '../../shared/model/user.model';
+import { User } from '../../model/user.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({

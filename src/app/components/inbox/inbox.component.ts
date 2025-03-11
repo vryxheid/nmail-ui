@@ -3,13 +3,13 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { Message } from '../../shared/model/message.model';
-import { TableItem } from '../../shared/model/table-item.model';
+import { Message } from '../../model/message.model';
+import { TableItem } from '../../model/table-item.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 enum InboxMode {
@@ -28,49 +28,37 @@ export class InboxComponent implements OnInit {
   public messages: TableItem<Message>[] = [];
   public allSelected: boolean = false;
   public inboxMode: InboxMode = InboxMode.Inbox;
+  public isSynching: boolean = false;
 
   constructor(private baseApiService: BaseApiService, private router: Router) {}
 
   ngOnInit(): void {
     if (this.router.url === '/sent') {
       this.inboxMode = InboxMode.Sent;
-      this.baseApiService
-        .getSentMessages()
-        .pipe(
-          tap((messages) => {
-            this.messages = messages.map((item) => ({
-              data: item,
-              isSelected: false,
-            }));
-          })
-        )
-        .subscribe();
     } else if (this.router.url === '/trash') {
       this.inboxMode = InboxMode.Trash;
-      this.baseApiService
-        .getMessagesInTrash()
-        .pipe(
-          tap((messages) => {
-            this.messages = messages.map((item) => ({
-              data: item,
-              isSelected: false,
-            }));
-          })
-        )
-        .subscribe();
-    } else {
-      this.baseApiService
-        .getMessages()
-        .pipe(
-          tap((messages) => {
-            this.messages = messages.map((item) => ({
-              data: item,
-              isSelected: false,
-            }));
-          })
-        )
-        .subscribe();
     }
+    this.fetchData().subscribe();
+  }
+
+  fetchData(): Observable<Message[]> {
+    let fetchData$: Observable<Message[]>;
+    if (this.inboxMode === InboxMode.Sent) {
+      fetchData$ = this.baseApiService.getSentMessages();
+    } else if (this.inboxMode === InboxMode.Trash) {
+      fetchData$ = this.baseApiService.getMessagesInTrash();
+    } else {
+      fetchData$ = this.baseApiService.getMessages();
+    }
+
+    return fetchData$.pipe(
+      tap((messages) => {
+        this.messages = messages.map((item) => ({
+          data: item,
+          isSelected: false,
+        }));
+      })
+    );
   }
 
   onSelectAllChanged(e: CheckboxChangeEvent) {
@@ -104,5 +92,16 @@ export class InboxComponent implements OnInit {
         this.messages[index].isSelected = false;
       }
     }
+  }
+
+  onStartSync() {
+    this.isSynching = true;
+    this.fetchData().subscribe({
+      next: () => {},
+      error: () => {},
+      complete: () => {
+        this.isSynching = false;
+      },
+    });
   }
 }

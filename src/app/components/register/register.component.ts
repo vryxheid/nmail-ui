@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { RegisterUserRequest } from '../../shared/model/user.model';
+import { RegisterUserRequest } from '../../model/user.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({

@@ -12,6 +12,7 @@ import { PasswordModule } from 'primeng/password';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 const PRIMENG_MODULES = [
@@ -28,6 +29,7 @@ const PRIMENG_MODULES = [
   TableModule,
   TextareaModule,
   ToolbarModule,
+  ToastModule,
 ];
 
 @NgModule({

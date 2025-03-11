@@ -5,9 +5,9 @@ import { tap } from 'rxjs';
 
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 
-import { Contact } from '../../shared/model/contact.model';
+import { Contact } from '../../model/contact.model';
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { TableItem } from '../../shared/model/table-item.model';
+import { TableItem } from '../../model/table-item.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 
 @Component({
