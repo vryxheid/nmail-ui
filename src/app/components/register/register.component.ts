@@ -16,6 +16,7 @@ import {
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { RegisterUserRequest } from '../../model/user.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,11 @@ import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 export class RegisterComponent {
   public formGroup!: FormGroup;
 
-  constructor(private baseApiService: BaseApiService, private router: Router) {}
+  constructor(
+    private baseApiService: BaseApiService,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.formGroup = new FormGroup(
@@ -55,7 +60,15 @@ export class RegisterComponent {
 
       this.baseApiService
         .registerUser(this.formGroup.value as RegisterUserRequest)
-        .pipe(tap(() => this.router.navigate(['/login'])))
+        .pipe(
+          tap(() => {
+            this.toastService.showToast({
+              text: 'User registered successfully',
+              severity: 'success',
+            });
+            this.router.navigate(['/login']);
+          })
+        )
         .subscribe();
     }
   }

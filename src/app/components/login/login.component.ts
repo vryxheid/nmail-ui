@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -11,6 +12,7 @@ import { tap } from 'rxjs';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { LS_JWT_TOKEN } from '../../shared/api/model/local-storage-variables';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,11 @@ import { LS_JWT_TOKEN } from '../../shared/api/model/local-storage-variables';
 export class LoginComponent implements OnInit {
   public formGroup!: FormGroup;
 
-  constructor(private baseApiService: BaseApiService) {}
+  constructor(
+    private baseApiService: BaseApiService,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.formGroup = new FormGroup({
@@ -41,6 +47,13 @@ export class LoginComponent implements OnInit {
         .pipe(
           tap((jwtTocken: string) => {
             localStorage.setItem(LS_JWT_TOKEN, jwtTocken);
+
+            this.toastService.showToast({
+              text: 'Logged in successfully',
+              severity: 'success',
+            });
+
+            this.router.navigate(['/inbox']);
           })
         )
         .subscribe();

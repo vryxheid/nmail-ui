@@ -12,6 +12,7 @@ import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
 import { MyPreset } from './shared/primeng/primeng-config';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,5 +29,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    MessageService,
   ],
 };

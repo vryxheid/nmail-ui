@@ -41,7 +41,7 @@ export class BaseApiService {
 
       const errorMessage = 'An unexpected error occurred';
 
-      this.toastService.messages$.next({
+      this.toastService.showToast({
         detail: errorMessage,
         summary: 'Error',
         severity: 'danger',
@@ -55,7 +55,7 @@ export class BaseApiService {
 
       const errorMessage = `Backend returned error code ${error.status}`;
 
-      this.toastService.messages$.next({
+      this.toastService.showToast({
         detail: errorMessage,
         summary: `Error ${error.status}`,
         severity: 'error',
