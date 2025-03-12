@@ -11,8 +11,7 @@ import { tap } from 'rxjs';
 
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { LS_JWT_TOKEN } from '../../shared/api/model/local-storage-variables';
-import { ToastService } from '../../shared/services/toast.service';
+import { LoginResponse } from '../../shared/api/model/login-response.model';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +22,7 @@ import { ToastService } from '../../shared/services/toast.service';
 export class LoginComponent implements OnInit {
   public formGroup!: FormGroup;
 
-  constructor(
-    private baseApiService: BaseApiService,
-    private router: Router,
-    private toastService: ToastService
-  ) {}
+  constructor(private baseApiService: BaseApiService, private router: Router) {}
 
   ngOnInit() {
     this.formGroup = new FormGroup({
@@ -44,19 +39,12 @@ export class LoginComponent implements OnInit {
     if (this.formGroup.valid) {
       this.baseApiService
         .login(this.formGroup.value)
-        .pipe(
-          tap((jwtTocken: string) => {
-            localStorage.setItem(LS_JWT_TOKEN, jwtTocken);
-
-            this.toastService.showToast({
-              text: 'Logged in successfully',
-              severity: 'success',
-            });
-
-            this.router.navigate(['/inbox']);
-          })
-        )
+        .pipe(tap(() => this.router.navigate(['/inbox'])))
         .subscribe();
     }
+  }
+
+  onRegisterClick() {
+    this.router.navigate(['/register']);
   }
 }

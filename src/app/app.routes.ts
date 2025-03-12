@@ -8,26 +8,43 @@ import { AdminPanelComponent } from './components/admin-panel/admin-panel.compon
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { MessageViewComponent } from './components/message-view/message-view.component';
 import { NewEmailComponent } from './components/new-email/new-email.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'inbox', component: InboxComponent },
-      { path: 'sent', component: InboxComponent },
-      { path: 'trash', component: InboxComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'admin', component: AdminPanelComponent },
-      { path: 'contacts', component: ContactsComponent },
-      { path: 'message/:id', component: MessageViewComponent },
-      { path: 'new-email', component: NewEmailComponent },
+      { path: 'inbox', component: InboxComponent, canActivate: [AuthGuard] },
+      { path: 'sent', component: InboxComponent, canActivate: [AuthGuard] },
+      { path: 'trash', component: InboxComponent, canActivate: [AuthGuard] },
+      {
+        path: 'admin',
+        component: AdminPanelComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'contacts',
+        component: ContactsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'message/:id',
+        component: MessageViewComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'new-email',
+        component: NewEmailComponent,
+        canActivate: [AuthGuard],
+      },
       // { path: 'settings', component: SettingsComponent },
       { path: '', redirectTo: 'inbox', pathMatch: 'full' }, // Default route
+      { path: 'notfound', component: NotFoundComponent },
     ],
   },
-  { path: 'notfound', component: NotFoundComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   // { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
   { path: '**', redirectTo: '/notfound' },
 ];

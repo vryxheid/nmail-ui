@@ -1,31 +1,42 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { map, Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { LoginRequest } from './model/login-request.model';
 import {
   LS_JWT_EXPIRES_AT,
   LS_JWT_TOKEN,
 } from './model/local-storage-variables';
+import { LoginResponse } from './model/login-response.model';
+import { ToastService } from '../services/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private toastService: ToastService
+  ) {}
 
-  public login(loginRequest: LoginRequest): Observable<string> {
-    const requestOptions: Object = {
-      responseType: 'text',
-      observe: 'response',
-    };
+  public login(loginRequest: LoginRequest): Observable<LoginResponse> {
+    const requestOptions: Object = {};
 
     return this.httpClient
-      .post<HttpResponse<string>>('/auth/login', loginRequest, requestOptions)
+      .post<LoginResponse>('/auth/login', loginRequest, requestOptions)
       .pipe(
-        map((response) => {
-          return response.body!;
+        tap((response: LoginResponse) => {
+          localStorage.setItem(LS_JWT_TOKEN, response.jwtToken);
+          localStorage.setItem(
+            LS_JWT_EXPIRES_AT,
+            new Date(response.expiresAt).toISOString()
+          );
+
+          this.toastService.showToast({
+            text: 'Logged in successfully',
+            severity: 'success',
+          });
         })
       );
   }
@@ -39,13 +50,14 @@ export class AuthService {
     return localStorage.getItem(LS_JWT_TOKEN) as string;
   }
 
-  //   public isLoggedIn() {
-  //     return new Date() < this.getExpiration();
-  // }
+  public isLoggedIn() {
+    const expiresAt = this.getExpiration();
+    return expiresAt && new Date() < expiresAt;
+  }
 
-  //   getExpiration() {
-  //     const expiration = localStorage.getItem("expires_at");
-  //     const expiresAt = JSON.parse(expiration);
-  //     return moment(expiresAt);
-  // }
+  getExpiration() {
+    const expiresAtString = localStorage.getItem(LS_JWT_EXPIRES_AT);
+    const expiresAt = expiresAtString ? new Date(expiresAtString) : null;
+    return expiresAt;
+  }
 }

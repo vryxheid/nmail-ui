@@ -10,6 +10,7 @@ import { Contact } from '../../model/contact.model';
 import { LoginRequest } from './model/login-request.model';
 import { AuthService } from './auth.service';
 import { ToastService } from '../services/toast.service';
+import { LoginResponse } from './model/login-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class BaseApiService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
+    if (error.status === 0 || !error.status) {
       /* A client-side or network error occurred. Handle it accordingly. */
 
       const errorMessage = 'An unexpected error occurred';
@@ -53,7 +54,7 @@ export class BaseApiService {
       /* The backend returned an unsuccessful response code.
       The response body may contain clues as to what went wrong. */
 
-      const errorMessage = `Backend returned error code ${error.status}`;
+      const errorMessage = `Error code ${error.status}`;
 
       this.toastService.showToast({
         detail: errorMessage,
@@ -104,10 +105,12 @@ export class BaseApiService {
     );
   }
 
-  public login(loginRequest: LoginRequest): Observable<string> {
+  public login(loginRequest: LoginRequest): Observable<LoginResponse> {
+    const mockTimeStamp = new Date();
+    mockTimeStamp.setMinutes(mockTimeStamp.getMinutes() + 30);
     return this.fetchOrMock(
       this.authService.login(loginRequest),
-      of('mockToken')
+      of({ jwtToken: 'mockToken', expiresAt: mockTimeStamp } as LoginResponse)
     );
   }
   //====================================================================================================================

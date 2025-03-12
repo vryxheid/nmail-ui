@@ -1,74 +1,94 @@
-<form [formGroup]="formGroup" class="user-form">
-  <h2>Register</h2>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <input pInputText id="name" formControlName="name" autocomplete="off" />
-      <label for="name">Name *</label>
-    </p-floatlabel>
-    @if (formGroup.get('name')?.invalid && formGroup.get('name')?.dirty) { @if
-    (formGroup.get('name')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Name is required</p-message
-    >
-    } }
-  </div>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <input pInputText id="email" formControlName="email" autocomplete="off" />
-      <label for="email">Email *</label>
-    </p-floatlabel>
-    @if (formGroup.get('email')?.invalid && formGroup.get('email')?.dirty) { @if
-    (formGroup.get('email')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Email is required</p-message
-    >
-    } }
-  </div>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <input pInputText id="phone" formControlName="phone" autocomplete="off" />
-      <label for="phone">Phone</label>
-    </p-floatlabel>
-  </div>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <p-password
-        formControlName="password"
-        [feedback]="false"
-        inputId="password"
+<div class="register-container">
+  <form [formGroup]="formGroup" class="user-form">
+    <h2 class="title">NMail</h2>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <input pInputText id="name" formControlName="name" autocomplete="off" />
+        <label for="name">Name *</label>
+      </p-floatlabel>
+      @if (formGroup.get('name')?.invalid && formGroup.get('name')?.dirty) { @if
+      (formGroup.get('name')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Name is required</p-message
+      >
+      } }
+    </div>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          autocomplete="off"
+        />
+        <label for="email">Email *</label>
+      </p-floatlabel>
+      @if (formGroup.get('email')?.invalid && formGroup.get('email')?.dirty) {
+      @if (formGroup.get('email')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Email is required</p-message
+      >
+      } }
+    </div>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="phone"
+          formControlName="phone"
+          autocomplete="off"
+        />
+        <label for="phone">Phone</label>
+      </p-floatlabel>
+    </div>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          inputId="password"
+        />
+        <label for="password">Password *</label>
+      </p-floatlabel>
+      @if (formGroup.get('password')?.invalid &&
+      formGroup.get('password')?.dirty) { @if
+      (formGroup.get('password')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Password is required</p-message
+      >
+      } }
+    </div>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-password
+          formControlName="repeatPassword"
+          [feedback]="false"
+          inputId="repeatPassword"
+        />
+        <label for="repeatPassword">Repeat Password *</label>
+      </p-floatlabel>
+      @if (formGroup.get('repeatPassword')?.invalid &&
+      formGroup.get('repeatPassword')?.dirty) { @if
+      (formGroup.get('repeatPassword')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Repeat Password is required</p-message
+      >
+      } } @if (formGroup.invalid && formGroup.dirty) { @if
+      (formGroup.errors?.['passwordMismatch']){
+      <p-message severity="error" variant="simple" size="small"
+        >Passwords do not match</p-message
+      >
+      } }
+    </div>
+    <div class="submit-btn">
+      <p-button label="Register" (onClick)="submit()" />
+    </div>
+    <div class="login-link">
+      Already have an account?<p-button
+        label="Sign in"
+        [link]="true"
+        (onClick)="onSignInClick()"
       />
-      <label for="password">Password *</label>
-    </p-floatlabel>
-    @if (formGroup.get('password')?.invalid && formGroup.get('password')?.dirty)
-    { @if (formGroup.get('password')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Password is required</p-message
-    >
-    } }
-  </div>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <p-password
-        formControlName="repeatPassword"
-        [feedback]="false"
-        inputId="repeatPassword"
-      />
-      <label for="repeatPassword">Repeat Password *</label>
-    </p-floatlabel>
-    @if (formGroup.get('repeatPassword')?.invalid &&
-    formGroup.get('repeatPassword')?.dirty) { @if
-    (formGroup.get('repeatPassword')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Repeat Password is required</p-message
-    >
-    } } @if (formGroup.invalid && formGroup.dirty) { @if
-    (formGroup.errors?.['passwordMismatch']){
-    <p-message severity="error" variant="simple" size="small"
-      >Passwords do not match</p-message
-    >
-    } }
-  </div>
-  <div class="submit-btn">
-    <p-button label="Register" (onClick)="submit()" />
-  </div>
-</form>
+    </div>
+  </form>
+</div>

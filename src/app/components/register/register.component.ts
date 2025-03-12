@@ -56,8 +56,6 @@ export class RegisterComponent {
       this.formGroup.get(key)?.markAsDirty();
     });
     if (this.formGroup.valid) {
-      console.log(this.formGroup);
-
       this.baseApiService
         .registerUser(this.formGroup.value as RegisterUserRequest)
         .pipe(
@@ -89,5 +87,9 @@ export class RegisterComponent {
         return null;
       }
     };
+  }
+
+  onSignInClick() {
+    this.router.navigate(['/login']);
   }
 }

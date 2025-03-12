@@ -1,17 +1,32 @@
-.user-form {
-  width: 30%;
-  padding: 10px;
-}
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 
-.field {
-  margin: 10px;
-}
-.submit-btn {
-  margin-top: 20px;
-}
+  background: radial-gradient(
+    farthest-corner at 40px 100px,
+    var(--p-primary-950) 0%,
+    var(--p-surface-900) 100%
+  );
 
-:ng-host {
-  .p-inputtext {
-    width: 100%;
+  h2.title {
+    color: var(--p-primary-500);
+    margin: 0 0 20px;
+  }
+
+  .user-form {
+    padding: 20px;
+    border-radius: 1px;
+    background-color: var(--p-content-background);
+  }
+
+  .field {
+    margin: 10px 0;
+  }
+
+  .submit-btn {
+    margin-top: 20px;
   }
 }

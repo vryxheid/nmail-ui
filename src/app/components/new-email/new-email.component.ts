@@ -43,7 +43,6 @@ export class NewEmailComponent implements OnInit {
       .pipe(
         tap((contacts: Contact[]) => {
           this.contactsCurrentUser = contacts;
-          console.log(this.contactsCurrentUser);
         })
       )
       .subscribe();

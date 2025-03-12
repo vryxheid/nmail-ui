@@ -31,8 +31,6 @@ export class MessageViewComponent implements OnInit {
           return this.baseApiService.getMessageById(Number(params.get('id')));
         }),
         tap((message) => {
-          console.log(message);
-
           this.message = message;
         }),
         switchMap((message) => {

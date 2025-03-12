@@ -1,35 +1,50 @@
-<form [formGroup]="formGroup" class="user-form">
-  <h2>Log In</h2>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <input pInputText id="email" formControlName="email" autocomplete="off" />
-      <label for="email">Email</label>
-    </p-floatlabel>
-    @if (formGroup.get('email')?.invalid && formGroup.get('email')?.dirty) { @if
-    (formGroup.get('email')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Email is required</p-message
-    >
-    } }
-  </div>
-  <div class="field">
-    <p-floatlabel variant="on">
-      <p-password
-        formControlName="password"
-        [feedback]="false"
-        inputId="password"
-      />
-      <label for="password">Password</label>
-    </p-floatlabel>
-    @if (formGroup.get('password')?.invalid && formGroup.get('password')?.dirty)
-    { @if (formGroup.get('password')?.errors?.['required']){
-    <p-message severity="error" variant="simple" size="small"
-      >Password is required</p-message
-    >
-    } }
-  </div>
+<div class="login-container">
+  <form [formGroup]="formGroup" class="user-form">
+    <h2 class="title">NMail</h2>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          autocomplete="off"
+        />
+        <label for="email">Email</label>
+      </p-floatlabel>
+      @if (formGroup.get('email')?.invalid && formGroup.get('email')?.dirty) {
+      @if (formGroup.get('email')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Email is required</p-message
+      >
+      } }
+    </div>
+    <div class="field">
+      <p-floatlabel variant="on">
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          inputId="password"
+        />
+        <label for="password">Password</label>
+      </p-floatlabel>
+      @if (formGroup.get('password')?.invalid &&
+      formGroup.get('password')?.dirty) { @if
+      (formGroup.get('password')?.errors?.['required']){
+      <p-message severity="error" variant="simple" size="small"
+        >Password is required</p-message
+      >
+      } }
+    </div>
 
-  <div class="submit-btn">
-    <p-button label="Log In" (onClick)="submit()" />
-  </div>
-</form>
+    <div class="submit-btn">
+      <p-button label="Log In" (onClick)="submit()" />
+    </div>
+    <div class="create-account-link">
+      Don't have an account?<p-button
+        label="Sign up"
+        [link]="true"
+        (onClick)="onRegisterClick()"
+      />
+    </div>
+  </form>
+</div>
