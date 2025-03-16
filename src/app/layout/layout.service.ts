@@ -72,7 +72,7 @@ export class LayoutService {
         routerLink: ['/settings'],
       },
       { label: 'Admin Panel', icon: 'pi pi-wrench', routerLink: ['/admin'] },
-      { label: 'Log Out', icon: 'pi pi-sign-out', routerLink: ['/log-out'] },
+      { label: 'Log Out', icon: 'pi pi-sign-out', routerLink: ['/logout'] },
     ];
   }
 }

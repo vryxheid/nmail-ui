@@ -9,6 +9,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
 import { MessageViewComponent } from './components/message-view/message-view.component';
 import { NewEmailComponent } from './components/new-email/new-email.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { LogoutGuard } from './shared/guards/logout.guard';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,7 @@ export const routes: Routes = [
     ],
   },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LoginComponent, canActivate: [LogoutGuard] },
   { path: 'register', component: RegisterComponent },
   // { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
   { path: '**', redirectTo: '/notfound' },
