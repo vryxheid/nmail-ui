@@ -8,12 +8,13 @@
       ></p-checkbox>
     </ng-template>
     <ng-template #end>
-      <i
-        class="pi pi-sync"
-        [class.pi-spin]="isSynching"
-        (click)="onStartSync()"
-        style="color: var(--p-button-text-secondary-color)"
-      ></i>
+      <p-button
+        [icon]="isSynching ? 'pi pi-sync pi-spin' : 'pi pi-sync'"
+        (onClick)="onStartSync()"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+      />
     </ng-template>
   </p-toolbar>
   <p-table

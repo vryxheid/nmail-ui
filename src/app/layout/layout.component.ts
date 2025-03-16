@@ -3,104 +3,42 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { PrimeNgModule } from '../shared/primeng/primeng.module';
-
-interface MenuItem {
-  icon: string;
-  label: string;
-  children?: MenuItem[];
-  isOpen?: boolean;
-  routerLink: string[];
-}
+import { NavigationItem } from './model/navigation-item.model';
+import { LayoutService } from './layout.service';
 
 @Component({
   selector: 'app-layout',
   imports: [RouterOutlet, RouterModule, CommonModule, PrimeNgModule],
+  providers: [LayoutService],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
-  public expanded: boolean = true;
+  public sidebarExpanded: boolean = true;
 
   public darkModeActive = true;
 
-  public menuItems: MenuItem[] = [
-    {
-      label: 'Inbox',
-      icon: 'pi pi-inbox',
-      isOpen: false,
-      routerLink: ['/inbox'],
-    },
-    {
-      label: 'Sent',
-      icon: 'pi pi-send',
-      isOpen: false,
-      routerLink: ['/sent'],
-    },
-    {
-      label: 'Drafts',
-      isOpen: false,
-      icon: 'pi pi-file-edit',
-      routerLink: ['/drafts'],
-    },
-    {
-      label: 'Spam',
-      isOpen: false,
-      icon: 'pi pi-exclamation-triangle',
-      routerLink: ['/spam'],
-    },
-    {
-      label: 'Trash',
-      icon: 'pi pi-trash',
-      isOpen: false,
-      routerLink: ['/trash'],
-    },
-    {
-      icon: 'pi pi-home',
-      label: 'Group',
-      isOpen: false,
-      routerLink: [],
-      children: [
-        { icon: 'pi pi-trash', label: 'Analytics', routerLink: [] },
-        { icon: 'pi pi-cog', label: 'Projects', routerLink: [] },
-      ],
-    },
+  public menuItems: NavigationItem[] = [];
 
-    {
-      label: 'Contacts',
-      icon: 'pi pi-address-book',
-      routerLink: ['/contacts'],
-    },
-    {
-      label: 'Log In',
-      icon: 'pi pi-sign-in',
-      isOpen: false,
-      routerLink: ['/login'],
-    },
-    {
-      label: 'Register',
-      icon: 'pi pi-user-plus',
-      isOpen: false,
-      routerLink: ['/register'],
-    },
-    {
-      label: 'Settings',
-      icon: 'pi pi-cog',
-      isOpen: false,
-      routerLink: ['/settings'],
-    },
-    { label: 'Admin Panel', icon: 'pi pi-wrench', routerLink: ['/admin'] },
-    { label: 'Log Out', icon: 'pi pi-sign-out', routerLink: ['/log-out'] },
-  ];
+  constructor(private router: Router, private layoutService: LayoutService) {}
 
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {}
-
-  toggleSidebar() {
-    this.expanded = !this.expanded;
+  ngOnInit(): void {
+    this.menuItems = this.layoutService.getNavigationItems();
+    // .filter((navItem)=>{
+    //   const userIsAdmin: boolean = ;
+    //   if(userIsAdmin){
+    //     return true;
+    //   }else{
+    //     return !['Admin Panel'].includes(navItem.label);
+    //   }
+    // });
   }
 
-  toggleMenuItem(item: MenuItem) {
+  toggleSidebar() {
+    this.sidebarExpanded = !this.sidebarExpanded;
+  }
+
+  toggleMenuItem(item: NavigationItem) {
     if (!item.children) {
       this.menuItems.forEach((item) => {
         item.isOpen = false;
@@ -114,7 +52,7 @@ export class LayoutComponent implements OnInit {
     }
 
     // Only toggle if sidebar is not collapsed and item has children
-    if (this.expanded && item.children) {
+    if (this.sidebarExpanded && item.children) {
       item.isOpen = !item.isOpen;
     }
   }

@@ -1,13 +1,13 @@
-<div class="layout">
+<div class="layout" [class.sidebar-collapsed]="!sidebarExpanded">
   <!-- Sidebar -->
-  <div class="sidebar" [class.sidebar-collapsed]="!expanded">
+  <div class="sidebar">
     <div class="sidebar-header">
       <a href="#" class="sidebar-logo"
         ><i
           class="pi pi-envelope"
-          [style]="expanded ? 'margin-right: 10px' : 'margin-left:0'"
-        ></i
-        >{{ expanded ? "NMail" : "NM" }}</a
+          [style]="sidebarExpanded ? 'margin-right: 10px' : 'margin-left:0'"
+        ></i>
+        {{ sidebarExpanded ? "NMail" : "NM" }}</a
       >
     </div>
     <div class="sidebar-menu">
@@ -27,14 +27,14 @@
             <i [class]="item.icon"></i>
             <span class="sidebar-item-text">{{ item.label }}</span>
             <i
-              *ngIf="item.children && expanded"
+              *ngIf="item.children && sidebarExpanded"
               class="pi pi-angle-down sidebar-item-arrow"
               [ngClass]="{ rotated: item.isOpen }"
             ></i>
           </a>
 
           <ul
-            *ngIf="item.children && expanded && item.isOpen"
+            *ngIf="item.children && sidebarExpanded && item.isOpen"
             class="sidebar-submenu"
           >
             <li *ngFor="let child of item.children">
@@ -48,15 +48,17 @@
         }
       </ul>
     </div>
-    <div class="toggle-btn">
-      <!-- Toggle Button -->
-      <p-button
-        [icon]="
-          expanded ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'
-        "
-        (onClick)="toggleSidebar()"
-      ></p-button>
-    </div>
+  </div>
+  <div class="toggle-btn">
+    <!-- Toggle Button -->
+    <p-button
+      [icon]="
+        sidebarExpanded ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'
+      "
+      (onClick)="toggleSidebar()"
+      size="small"
+      id="btn-toggle-id"
+    ></p-button>
   </div>
 
   <div class="not-menu-container">
