@@ -1,5 +1,6 @@
 .inbox-table-container {
-  height: calc(100vh - var(--navbar-height) - 65px);
+  min-height: 250px;
+  height: calc(100vh - var(--navbar-height) - 85px);
 }
 
 ::ng-deep {
