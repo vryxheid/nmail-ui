@@ -1,4 +1,4 @@
-export class LoginResponse {
-  jwtToken!: string;
-  expiresAt!: Date;
+export interface LoginResponse {
+  jwtToken: string;
+  expiresAt: Date;
 }

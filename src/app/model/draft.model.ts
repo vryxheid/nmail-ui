@@ -1,10 +1,8 @@
-export interface Message {
+export interface Draft {
   id: number;
   subject: string;
   body: string | null;
   senderId: number;
-  recipientId: number;
+  recipientId: number | null;
   date: Date;
-  read: boolean;
-  isTrash: boolean;
 }
