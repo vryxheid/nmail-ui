@@ -12,6 +12,8 @@ import { tap } from 'rxjs';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
+import { DraftService } from '../inbox/draft.service';
+import { Draft, Message } from '../../model/message.model';
 
 @Component({
   selector: 'app-new-email',
@@ -66,9 +68,16 @@ export class NewEmailComponent implements OnInit {
       this.formGroup.get(key)?.markAsDirty();
     });
     if (this.formGroup.valid) {
-      console.log('save as draft');
+      const { subject, body, recipients } = this.formGroup.value;
 
-      console.log(this.formGroup.value);
+      DraftService.drafts.push({
+        recipientIds: recipients,
+        subject: subject,
+        body: body,
+        date: new Date(),
+        id: 0,
+        senderId: 0,
+      } as Draft);
     }
   }
 

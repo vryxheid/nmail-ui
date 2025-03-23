@@ -10,6 +10,7 @@ import { MessageViewComponent } from './components/message-view/message-view.com
 import { NewEmailComponent } from './components/new-email/new-email.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { LogoutGuard } from './shared/guards/logout.guard';
+import { DraftViewComponent } from './components/draft-view/draft-view.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,7 @@ export const routes: Routes = [
       { path: 'inbox', component: InboxComponent, canActivate: [AuthGuard] },
       { path: 'sent', component: InboxComponent, canActivate: [AuthGuard] },
       { path: 'trash', component: InboxComponent, canActivate: [AuthGuard] },
+      { path: 'draft', component: InboxComponent, canActivate: [AuthGuard] },
       {
         path: 'admin',
         component: AdminPanelComponent,
@@ -35,18 +37,23 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'draft/:id',
+        component: DraftViewComponent,
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'new-email',
         component: NewEmailComponent,
         canActivate: [AuthGuard],
       },
       // { path: 'settings', component: SettingsComponent },
       { path: '', redirectTo: 'inbox', pathMatch: 'full' }, // Default route
-      { path: 'notfound', component: NotFoundComponent },
     ],
   },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LoginComponent, canActivate: [LogoutGuard] },
   { path: 'register', component: RegisterComponent },
   // { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+  { path: 'notfound', component: NotFoundComponent },
   { path: '**', redirectTo: '/notfound' },
 ];

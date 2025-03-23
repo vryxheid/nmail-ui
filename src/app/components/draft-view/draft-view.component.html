@@ -1,0 +1,23 @@
+<div class="draft-view-container">
+  <p-panel>
+    <ng-template #header id="draft-view-header">
+      <div class="header-content">
+        <div class="header-content-left">
+          <!-- <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" /> -->
+
+          <div class="subject">{{ draft.subject }}</div>
+          <div class="sender-info">
+            to:
+            <span class="sender-info-value">{{ draft.recipientIds }}</span>
+          </div>
+        </div>
+        <div class="header-content-right">
+          <div class="draft-date">
+            {{ draft.date | date : "dd MMM yyy, HH:mm" }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <p class="m-0" class [textContent]="draft.body"></p>
+  </p-panel>
+</div>

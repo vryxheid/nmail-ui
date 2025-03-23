@@ -1,0 +1,40 @@
+::ng-deep {
+  .draft-view-container {
+    .p-panel {
+      border-radius: 0;
+
+      .p-panel-header {
+        background-color: var(--p-slate-950);
+        border-bottom: 1px solid var(--p-panel-border-color);
+        .header-content {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          .header-content-left {
+            width: 75%;
+            .subject {
+              font-weight: bold;
+              margin-right: 2px;
+            }
+            .sender-info {
+              font-size: 0.8rem;
+              .sender-info-value {
+                font-weight: 100;
+              }
+            }
+          }
+          .header-content-right {
+            .draft-date {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+      .p-panel-content {
+        white-space: pre-wrap;
+      }
+    }
+  }
+}

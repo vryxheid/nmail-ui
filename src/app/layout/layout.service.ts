@@ -21,7 +21,7 @@ export class LayoutService {
         label: 'Drafts',
         isOpen: false,
         icon: 'pi pi-file-edit',
-        routerLink: ['/drafts'],
+        routerLink: ['/draft'],
       },
       {
         label: 'Spam',

@@ -1,6 +1,21 @@
-.page-not-found {
-  padding: 10px;
-  h2 {
-    color: var(--p-primary-500);
+.page-not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  .page-not-found {
+    padding: 10px;
+    .title {
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      font-size: 2rem;
+      color: var(--p-primary-500);
+      .logo {
+        font-size: 2rem;
+      }
+    }
   }
 }

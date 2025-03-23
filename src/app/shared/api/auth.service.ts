@@ -9,16 +9,13 @@ import {
   LS_JWT_TOKEN,
 } from './model/local-storage-variables';
 import { LoginResponse } from './model/login-response.model';
-import { ToastService } from '../services/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private httpClient: HttpClient,
-    private toastService: ToastService
-  ) {}
+  private loggedIn = false;
+  constructor(private httpClient: HttpClient) {}
 
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
     const requestOptions: Object = {};
@@ -27,16 +24,12 @@ export class AuthService {
       .post<LoginResponse>('/auth/login', loginRequest, requestOptions)
       .pipe(
         tap((response: LoginResponse) => {
+          this.loggedIn = true;
           localStorage.setItem(LS_JWT_TOKEN, response.jwtToken);
           localStorage.setItem(
             LS_JWT_EXPIRES_AT,
             new Date(response.expiresAt).toISOString()
           );
-
-          this.toastService.showToast({
-            text: 'Logged in successfully',
-            severity: 'success',
-          });
         })
       );
   }
@@ -52,7 +45,7 @@ export class AuthService {
 
   public isLoggedIn() {
     const expiresAt = this.getExpiration();
-    return expiresAt && new Date() < expiresAt;
+    return this.loggedIn && expiresAt && new Date() < expiresAt;
   }
 
   getExpiration() {
