@@ -13,7 +13,16 @@ import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { DraftService } from '../inbox/draft.service';
-import { Draft, Message } from '../../model/message.model';
+import {
+  Draft,
+  MessageWithEmails,
+  SendMessageRequest,
+} from '../../model/message.model';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { CurrentUserService } from '../../shared/services/current-user.service';
+import { LS_USER_ID } from '../../shared/api/model/local-storage-variables';
+import { MessageService } from 'primeng/api';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Component({
   selector: 'app-new-email',
@@ -24,18 +33,18 @@ import { Draft, Message } from '../../model/message.model';
 export class NewEmailComponent implements OnInit {
   public formGroup!: FormGroup;
 
-  public recipients: string[] = [];
   public contactsCurrentUser: Contact[] = [];
+  public filteredContacts: Contact[] = [];
 
-  public get emailsContactsCurrentUser() {
-    return this.contactsCurrentUser.map((contact) => contact.email);
-  }
-
-  constructor(private baseApiService: BaseApiService, private router: Router) {}
+  constructor(
+    private baseApiService: BaseApiService,
+    private router: Router,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
-      recipients: new FormControl<string[]>([]),
+      recipients: new FormControl<Contact[]>([]),
       subject: new FormControl<string>(''),
       body: new FormControl<string>(''),
     });
@@ -45,6 +54,7 @@ export class NewEmailComponent implements OnInit {
       .pipe(
         tap((contacts: Contact[]) => {
           this.contactsCurrentUser = contacts;
+          this.filteredContacts = contacts;
         })
       )
       .subscribe();
@@ -56,9 +66,23 @@ export class NewEmailComponent implements OnInit {
       this.formGroup.get(key)?.markAsDirty();
     });
     if (this.formGroup.valid) {
-      console.log('Send Message');
+      const { subject, body } = this.formGroup.value;
 
-      console.log(this.formGroup.value);
+      this.formGroup.value.recipients.forEach((recipient: Contact) => {
+        const message: SendMessageRequest = {
+          subject: subject,
+          body: body,
+          recipientEmail: recipient.email,
+          senderId: new Number(localStorage.getItem(LS_USER_ID)).valueOf(),
+        };
+        this.baseApiService.sendMessage(message).subscribe(() => {
+          this.toastService.showToast({
+            text: 'Message sent',
+            severity: 'success',
+          });
+          this.router.navigate(['/inbox']);
+        });
+      });
     }
   }
 
@@ -71,7 +95,7 @@ export class NewEmailComponent implements OnInit {
       const { subject, body, recipients } = this.formGroup.value;
 
       DraftService.drafts.push({
-        recipientIds: recipients,
+        recipientIds: recipients.map((item: Contact) => item.id),
         subject: subject,
         body: body,
         date: new Date(),
@@ -79,6 +103,23 @@ export class NewEmailComponent implements OnInit {
         senderId: 0,
       } as Draft);
     }
+  }
+
+  public search(event: AutoCompleteCompleteEvent) {
+    let filtered: Contact[] = [];
+    let query = event.query;
+
+    this.contactsCurrentUser.forEach((contact) => {
+      if (
+        contact.email.toLowerCase().includes(query.toLowerCase()) ||
+        (contact.name &&
+          contact.name.toLowerCase().includes(query.toLowerCase()))
+      ) {
+        filtered.push(contact);
+      }
+    });
+
+    this.filteredContacts = filtered;
   }
 
   public discard() {

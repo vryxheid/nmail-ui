@@ -1,11 +1,22 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 
 import * as MockData from '../../../assets/mock-data/mock-data';
-import { RegisterUserRequest, User } from '../../model/user.model';
-import { Message } from '../../model/message.model';
+import { RegisterUserRequest, User, UserReduced } from '../../model/user.model';
+import {
+  MessageWithEmails,
+  SendMessageRequest,
+} from '../../model/message.model';
 import { Contact } from '../../model/contact.model';
 import { LoginRequest } from './model/login-request.model';
 import { AuthService } from './auth.service';
@@ -15,6 +26,8 @@ import {
   LS_JWT_EXPIRES_AT,
   LS_JWT_TOKEN,
 } from './model/local-storage-variables';
+import { UserReducedRequest } from './model/user-reduced.request';
+import { CurrentUserService } from '../services/current-user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +35,10 @@ import {
 export class BaseApiService {
   private LOAD_MOCK_DATA = false;
 
-  public contactsCurrentUser: Contact[] | null = null;
-
   constructor(
     private httpClient: HttpClient,
     private authService: AuthService,
+    private currentUserService: CurrentUserService,
     private toastService: ToastService
   ) {}
 
@@ -37,7 +49,7 @@ export class BaseApiService {
     if (this.LOAD_MOCK_DATA) {
       return mockValue;
     }
-    return fetchedValue.pipe(catchError(this.handleError.bind(this)));
+    return fetchedValue;
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -49,7 +61,7 @@ export class BaseApiService {
       this.toastService.showToast({
         detail: errorMessage,
         summary: 'Error',
-        severity: 'danger',
+        severity: 'error',
       });
 
       // Return an observable with a user-facing error message.
@@ -88,7 +100,23 @@ export class BaseApiService {
           )
         )
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  public getUserByEmail(email: string): Observable<UserReduced> {
+    const body: UserReducedRequest = { email: email };
+    return this.fetchOrMock(
+      this.httpClient.post<UserReduced>('/api/user-by-email', body),
+      of(MockData.mockUserReduced).pipe(
+        map(
+          (user) =>
+            ({
+              ...user,
+              lastLogIn: new Date(user.lastLogIn),
+            } as UserReduced)
+        )
+      )
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 
   public registerUser(
@@ -106,12 +134,13 @@ export class BaseApiService {
             } as User)
         )
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 
-  public login(loginRequest: LoginRequest): Observable<LoginResponse> {
+  public login(loginRequest: LoginRequest) {
+    const fourHoursInMiliseconds = 4 * 60 * 60 * 1000;
     const mockTimeStamp = new Date();
-    mockTimeStamp.setMinutes(mockTimeStamp.getMinutes() + 30);
+    mockTimeStamp.setTime(mockTimeStamp.getTime() + fourHoursInMiliseconds);
     return this.fetchOrMock(
       this.authService.login(loginRequest),
       of({
@@ -120,108 +149,137 @@ export class BaseApiService {
       } as LoginResponse).pipe(
         tap((response: LoginResponse) => {
           // Set mock token and expiration
-          const expirationDate = new Date();
-          expirationDate.setTime(expirationDate.getTime() + 4 * 60 * 60 * 1000);
           localStorage.setItem(LS_JWT_TOKEN, response.jwtToken);
-          localStorage.setItem(LS_JWT_EXPIRES_AT, expirationDate.toISOString());
+          localStorage.setItem(LS_JWT_EXPIRES_AT, mockTimeStamp.toISOString());
         })
       )
     ).pipe(
-      tap(() => {
+      switchMap(() => {
+        return this.getUserByEmail(loginRequest.email);
+      }),
+      tap((user: UserReduced) => {
+        this.currentUserService.setCurrentUser(user);
         this.toastService.showToast({
           text: 'Logged in successfully',
           severity: 'success',
         });
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          const errorMessage = 'Wrong email or password';
+
+          this.toastService.showToast({
+            detail: errorMessage,
+            summary: 'Unauthorized',
+            severity: 'error',
+          });
+
+          return throwError(() => new Error(errorMessage));
+        } else {
+          return this.handleError(error);
+        }
       })
     );
   }
   //====================================================================================================================
   // MESSAGE
   //====================================================================================================================
-  public getMessages(): Observable<Message[]> {
+  public getMessages(): Observable<MessageWithEmails[]> {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/inbox'),
-      of(MockData.mockMessages).pipe(
+      this.httpClient.get<MessageWithEmails[]>('/api/inbox'),
+      of(MockData.mockMessagesWithEmails).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
             (messageAsJson) =>
               ({
                 ...messageAsJson,
                 date: new Date(messageAsJson.date),
-              } as Message)
+              } as MessageWithEmails)
           );
         })
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 
-  public getSentMessages(): Observable<Message[]> {
+  public getSentMessages(): Observable<MessageWithEmails[]> {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/sent'),
-      of(MockData.mockMessages).pipe(
+      this.httpClient.get<MessageWithEmails[]>('/api/sent'),
+      of(MockData.mockMessagesWithEmails).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
             (messageAsJson) =>
               ({
                 ...messageAsJson,
                 date: new Date(messageAsJson.date),
-              } as Message)
+              } as MessageWithEmails)
           );
         })
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 
   getMessagesInTrash() {
     return this.fetchOrMock(
-      this.httpClient.get<Message[]>('/api/trash'),
-      of(MockData.mockMessages).pipe(
+      this.httpClient.get<MessageWithEmails[]>('/api/trash'),
+      of(MockData.mockMessagesWithEmails).pipe(
         map((messagesAsJson) => {
           return messagesAsJson.map(
             (messageAsJson) =>
               ({
                 ...messageAsJson,
                 date: new Date(messageAsJson.date),
-              } as Message)
+              } as MessageWithEmails)
           );
         })
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 
-  public getMessageById(id: number): Observable<Message> {
+  public getMessageById(id: number): Observable<MessageWithEmails> {
     return this.fetchOrMock(
-      this.httpClient.get<Message>('/api/message/' + id),
-      of(MockData.mockMessages[0]).pipe(
+      this.httpClient.get<MessageWithEmails>('/api/message/' + id),
+      of(MockData.mockMessagesWithEmails[0]).pipe(
         map(
           (messageAsJson) =>
             ({
               ...messageAsJson,
               date: new Date(messageAsJson.date),
-            } as Message)
+            } as MessageWithEmails)
         )
       )
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  public sendMessage(message: SendMessageRequest) {
+    return this.fetchOrMock(
+      this.httpClient.post('/api/send-message', message),
+      of(MockData.mockMessagesWithEmails[0])
+    ).pipe(catchError(this.handleError.bind(this)));
   }
   //====================================================================================================================
   // CONTACT
   //====================================================================================================================
   public getContacts(refresh = false): Observable<Contact[]> {
     // If contacts were already fetched, no need to fetch again, except explicit request to refresh data
-    if (this.contactsCurrentUser && !refresh) {
-      return of(this.contactsCurrentUser);
+    if (this.currentUserService.contactsCurrentUser && !refresh) {
+      return of(this.currentUserService.contactsCurrentUser);
     } else {
       return this.fetchOrMock(
         this.httpClient.get<Contact[]>('/api/contacts'),
         of(MockData.mockContacts)
+      ).pipe(
+        tap((contacts: Contact[]) => {
+          this.currentUserService.setContactsCurrentUser(contacts);
+        }),
+        catchError(this.handleError.bind(this))
       );
     }
   }
 
-  public getContactById(contactId: number): Observable<Contact> {
+  public getContactByEmail(email: string): Observable<Contact> {
     return this.fetchOrMock(
-      this.httpClient.get<Contact>('/api/contact/' + contactId),
+      this.httpClient.post<Contact>('/api/contact/', { email: email }),
       of(MockData.mockContacts[0])
-    );
+    ).pipe(catchError(this.handleError.bind(this)));
   }
 }

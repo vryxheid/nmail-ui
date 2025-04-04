@@ -50,14 +50,24 @@ export class RegisterComponent {
     );
   }
 
-  submit() {
+  public submit() {
     this.formGroup.markAsDirty();
     Object.keys(this.formGroup.controls).forEach((key) => {
       this.formGroup.get(key)?.markAsDirty();
     });
     if (this.formGroup.valid) {
+      const { email, name, phone, password } = this.formGroup.value;
+      const user: RegisterUserRequest = {
+        email: email,
+        name: name.length > 0 ? name : null,
+        phone: phone.length > 0 ? phone : null,
+        id: 0,
+        password: password,
+        lastLogIn: null,
+        superAdmin: false,
+      };
       this.baseApiService
-        .registerUser(this.formGroup.value as RegisterUserRequest)
+        .registerUser(user)
         .pipe(
           tap(() => {
             this.toastService.showToast({
@@ -71,7 +81,7 @@ export class RegisterComponent {
     }
   }
 
-  passwordMatchValidator(
+  private passwordMatchValidator(
     password: string,
     confirmPassword: string
   ): ValidatorFn {

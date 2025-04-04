@@ -1,4 +1,5 @@
 <div class="message-view-container">
+  @if(message){
   <p-panel>
     <ng-template #header id="message-view-header">
       <div class="header-content">
@@ -11,7 +12,7 @@
             <span class="sender-info-value">{{
               contact
                 ? contact.name + " (" + contact.email + ")"
-                : message.senderId
+                : message.senderEmail
             }}</span>
           </div>
         </div>
@@ -22,6 +23,6 @@
         </div>
       </div>
     </ng-template>
-    <p class="m-0" class [textContent]="message.body"></p>
-  </p-panel>
+    <p class="m-0" class [textContent]="message.body"></p> </p-panel
+  >}
 </div>

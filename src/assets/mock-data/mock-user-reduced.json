@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "name": "User One",
+  "email": "test1@mail.com",
+  "phone": "123-456-7890",
+  "lastLogIn": "2024-01-30T09:15:00Z",
+  "superAdmin": true
+}

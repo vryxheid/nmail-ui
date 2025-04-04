@@ -7,10 +7,18 @@
         <p-autocomplete
           multiple
           formControlName="recipients"
-          [suggestions]="emailsContactsCurrentUser"
+          [suggestions]="filteredContacts"
+          (completeMethod)="search($event)"
           inputId="recipients"
           fluid
-        ></p-autocomplete>
+          optionLabel="email"
+        >
+          <ng-template let-contact #item>
+            <div class="flex items-center gap-2">
+              <div>{{ contact.name + " (" + contact.email + ")" }}</div>
+            </div>
+          </ng-template></p-autocomplete
+        >
       </div>
       <div class="row subject-row">
         <span class="input-label">Subject:</span>

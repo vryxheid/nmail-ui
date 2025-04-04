@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 
 import { switchMap, tap } from 'rxjs';
 
-import { Message } from '../../model/message.model';
+import { MessageWithEmails } from '../../model/message.model';
 import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   selector: 'app-message-view',
@@ -16,11 +17,12 @@ import { PrimeNgModule } from '../../shared/primeng/primeng.module';
   styleUrl: './message-view.component.scss',
 })
 export class MessageViewComponent implements OnInit {
-  public message!: Message;
+  public message!: MessageWithEmails;
   public contact?: Contact;
 
   constructor(
     private baseApiService: BaseApiService,
+    private contactService: CurrentUserService,
     private route: ActivatedRoute
   ) {}
 
@@ -32,13 +34,12 @@ export class MessageViewComponent implements OnInit {
         }),
         tap((message) => {
           this.message = message;
-        }),
-        switchMap((message) => {
-          return this.baseApiService.getContactById(message.senderId).pipe(
-            tap((data) => {
-              this.contact = data;
-            })
+          const foundContact = this.contactService.getContactByEmail(
+            message.senderEmail
           );
+          if (foundContact) {
+            this.contact = foundContact;
+          }
         })
       )
       .subscribe();

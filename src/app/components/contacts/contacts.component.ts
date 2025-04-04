@@ -53,7 +53,7 @@ export class ContactsComponent {
     }
   }
 
-  onCheckBoxClicked(event: CheckboxChangeEvent, messageId: number) {
+  public onCheckBoxClicked(event: CheckboxChangeEvent, messageId: number) {
     const index = this.contacts.map((msg) => msg.data.id).indexOf(messageId, 0);
     if (index > -1) {
       if (event.checked) {

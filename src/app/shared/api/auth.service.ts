@@ -7,6 +7,7 @@ import { LoginRequest } from './model/login-request.model';
 import {
   LS_JWT_EXPIRES_AT,
   LS_JWT_TOKEN,
+  LS_USER_ID,
 } from './model/local-storage-variables';
 import { LoginResponse } from './model/login-response.model';
 
@@ -14,22 +15,22 @@ import { LoginResponse } from './model/login-response.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private loggedIn = false;
   constructor(private httpClient: HttpClient) {}
 
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
+    this.logout();
     const requestOptions: Object = {};
 
     return this.httpClient
       .post<LoginResponse>('/auth/login', loginRequest, requestOptions)
       .pipe(
         tap((response: LoginResponse) => {
-          this.loggedIn = true;
           localStorage.setItem(LS_JWT_TOKEN, response.jwtToken);
           localStorage.setItem(
             LS_JWT_EXPIRES_AT,
             new Date(response.expiresAt).toISOString()
           );
+          localStorage.setItem(LS_USER_ID, response.userId.toString());
         })
       );
   }
@@ -37,6 +38,7 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem(LS_JWT_TOKEN);
     localStorage.removeItem(LS_JWT_EXPIRES_AT);
+    localStorage.removeItem(LS_USER_ID);
   }
 
   public getJwtToken(): string {
@@ -45,7 +47,7 @@ export class AuthService {
 
   public isLoggedIn() {
     const expiresAt = this.getExpiration();
-    return this.loggedIn && expiresAt && new Date() < expiresAt;
+    return expiresAt && new Date() < expiresAt;
   }
 
   getExpiration() {

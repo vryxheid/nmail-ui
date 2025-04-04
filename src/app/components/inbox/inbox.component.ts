@@ -8,7 +8,7 @@ import { Observable, of, tap } from 'rxjs';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 
 import { BaseApiService } from '../../shared/api/base-api.service';
-import { Draft, Message } from '../../model/message.model';
+import { Draft, MessageWithEmails } from '../../model/message.model';
 import { TableItem } from '../../model/table-item.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { DraftService } from './draft.service';
@@ -27,7 +27,7 @@ enum InboxMode {
   styleUrl: './inbox.component.scss',
 })
 export class InboxComponent implements OnInit {
-  public messages: TableItem<Message | Draft>[] = [];
+  public messages: TableItem<MessageWithEmails | Draft>[] = [];
   public allSelected: boolean = false;
   public inboxMode: InboxMode = InboxMode.Inbox;
   public isSynching: boolean = false;
@@ -45,8 +45,8 @@ export class InboxComponent implements OnInit {
     this.fetchData().subscribe();
   }
 
-  fetchData(): Observable<Message[] | Draft[]> {
-    let fetchData$: Observable<Message[] | Draft[]>;
+  private fetchData(): Observable<MessageWithEmails[] | Draft[]> {
+    let fetchData$: Observable<MessageWithEmails[] | Draft[]>;
     switch (this.inboxMode) {
       case InboxMode.Sent:
         fetchData$ = this.baseApiService.getSentMessages();
@@ -67,7 +67,7 @@ export class InboxComponent implements OnInit {
     }
 
     return fetchData$.pipe(
-      tap((messages: Message[] | Draft[]) => {
+      tap((messages: MessageWithEmails[] | Draft[]) => {
         this.messages = messages.map((item) => ({
           data: item,
           isSelected: false,
@@ -76,7 +76,7 @@ export class InboxComponent implements OnInit {
     );
   }
 
-  onSelectAllChanged(e: CheckboxChangeEvent) {
+  public onSelectAllChanged(e: CheckboxChangeEvent) {
     if (e.checked) {
       this.messages = this.messages.map((msg) => ({
         ...msg,
@@ -90,7 +90,7 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  onRowClick(message: TableItem<Message | Draft>) {
+  public onRowClick(message: TableItem<MessageWithEmails | Draft>) {
     if (this.inboxMode === InboxMode.Draft) {
       this.router.navigate(['/draft/' + message.data.id]);
     } else {
@@ -98,11 +98,7 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  openMessage(e: any) {
-    console.log(e);
-  }
-
-  onCheckBoxClicked(event: CheckboxChangeEvent, messageId: number) {
+  public onCheckBoxClicked(event: CheckboxChangeEvent, messageId: number) {
     const index = this.messages.map((msg) => msg.data.id).indexOf(messageId, 0);
     if (index > -1) {
       if (event.checked) {
@@ -113,7 +109,7 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  onStartSync() {
+  public onStartSync() {
     this.isSynching = true;
     this.fetchData().subscribe({
       next: () => {},

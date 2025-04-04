@@ -7,8 +7,14 @@
 
           <div class="subject">{{ draft.subject }}</div>
           <div class="sender-info">
+            from:
+            <span class="sender-info-value">{{ currentUser?.email }}</span>
+          </div>
+          <div class="recipients-info">
             to:
-            <span class="sender-info-value">{{ draft.recipientIds }}</span>
+            <span class="recipients-info-value">{{
+              getRecipientsString(draft.recipientIds)
+            }}</span>
           </div>
         </div>
         <div class="header-content-right">

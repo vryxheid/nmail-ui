@@ -34,11 +34,11 @@ export class LayoutComponent implements OnInit {
     // });
   }
 
-  toggleSidebar() {
+  public toggleSidebar() {
     this.sidebarExpanded = !this.sidebarExpanded;
   }
 
-  toggleMenuItem(item: NavigationItem) {
+  public toggleMenuItem(item: NavigationItem) {
     if (!item.children) {
       this.menuItems.forEach((item) => {
         item.isOpen = false;
@@ -57,17 +57,17 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  toggleDarkMode() {
+  public toggleDarkMode() {
     this.darkModeActive = !this.darkModeActive;
     const element = document.querySelector('html');
     element?.classList.toggle('nmail-dark');
   }
 
-  isActive(routerLink: string[]): boolean {
+  public isActive(routerLink: string[]): boolean {
     return this.router.url === routerLink[0]; // Compare with current route
   }
 
-  openNewEmailWindow() {
+  public openNewEmailWindow() {
     this.router.navigate(['/new-email']);
   }
 

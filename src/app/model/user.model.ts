@@ -9,9 +9,20 @@ export interface User {
 }
 
 export interface RegisterUserRequest {
+  id: number;
+  name: string | null;
+  email: string;
+  password: string;
+  phone: string | null;
+  lastLogIn: Date | null;
+  superAdmin: boolean;
+}
+
+export interface UserReduced {
+  id: number;
   name: string | null;
   email: string;
   phone: string | null;
-  password: string;
-  repeatPassword: string;
+  lastLogIn: Date | null;
+  superAdmin: boolean;
 }

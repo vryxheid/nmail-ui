@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { of, switchMap, tap, throwError } from 'rxjs';
+import { tap, throwError } from 'rxjs';
 
-import { Contact } from '../../model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { DraftService } from '../inbox/draft.service';
 import { Draft } from '../../model/message.model';
-import { BaseApiService } from '../../shared/api/base-api.service';
+import { UserReduced } from '../../model/user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   selector: 'app-draft-view',
@@ -18,21 +18,23 @@ import { BaseApiService } from '../../shared/api/base-api.service';
 })
 export class DraftViewComponent implements OnInit {
   public draft!: Draft;
+  public currentUser: UserReduced | null = null;
 
   constructor(
     private draftService: DraftService,
+    private currentUserService: CurrentUserService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.currentUser = this.currentUserService.currentUser;
     this.route.paramMap
       .pipe(
         tap((params) => {
           const draft = this.draftService.getDraftById(
             Number(params.get('id'))
           );
-          console.log(draft);
 
           if (!draft) {
             this.router.navigate(['/draft']);
@@ -43,5 +45,19 @@ export class DraftViewComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  public getRecipientsString(recipientIds: number[]) {
+    const foundContacts: string[] = [];
+    recipientIds.forEach((id) => {
+      const foundContact = this.currentUserService.contactsCurrentUser?.find(
+        (contact) => contact.id === id
+      );
+      if (foundContact && foundContact.email && foundContact.email.length > 0) {
+        foundContacts.push(foundContact.email);
+      }
+    });
+
+    return foundContacts.join(', ');
   }
 }
