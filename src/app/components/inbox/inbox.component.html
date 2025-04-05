@@ -52,7 +52,8 @@
         <td (click)="onRowClick(message)" style="cursor: pointer">
           {{ message.data.subject }}
         </td>
-        <td>from: {{ message.data.senderId }}</td>
+        <td>from: {{ message.data.senderEmail }}</td>
+        <td>to: {{ message.data.recipientEmail }}</td>
         <td>{{ message.data.date | date : "dd MMM yyy, HH:mm" }}</td>
       </tr>
     </ng-template>

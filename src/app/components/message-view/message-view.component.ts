@@ -18,11 +18,12 @@ import { CurrentUserService } from '../../shared/services/current-user.service';
 })
 export class MessageViewComponent implements OnInit {
   public message!: MessageWithEmails;
-  public contact?: Contact;
+  public senderContact?: Contact;
+  public recipientContact?: Contact;
 
   constructor(
     private baseApiService: BaseApiService,
-    private contactService: CurrentUserService,
+    private currentUserService: CurrentUserService,
     private route: ActivatedRoute
   ) {}
 
@@ -30,16 +31,34 @@ export class MessageViewComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((params) => {
-          return this.baseApiService.getMessageById(Number(params.get('id')));
+          return this.baseApiService
+            .getMessageById(Number(params.get('id')))
+            .pipe(
+              tap((message) => {
+                this.message = message;
+              })
+            );
         }),
-        tap((message) => {
-          this.message = message;
-          const foundContact = this.contactService.getContactByEmail(
-            message.senderEmail
+        switchMap(() => {
+          return this.baseApiService.getContacts().pipe(
+            tap(() => {
+              const foundSenderContact =
+                this.currentUserService.getContactByEmail(
+                  this.message.senderEmail
+                );
+
+              if (foundSenderContact) {
+                this.senderContact = foundSenderContact;
+              }
+              const foundRecipientContact =
+                this.currentUserService.getContactByEmail(
+                  this.message.recipientEmail
+                );
+              if (foundRecipientContact) {
+                this.recipientContact = foundRecipientContact;
+              }
+            })
           );
-          if (foundContact) {
-            this.contact = foundContact;
-          }
         })
       )
       .subscribe();

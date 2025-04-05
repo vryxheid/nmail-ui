@@ -13,16 +13,11 @@ import { BaseApiService } from '../../shared/api/base-api.service';
 import { Contact } from '../../model/contact.model';
 import { PrimeNgModule } from '../../shared/primeng/primeng.module';
 import { DraftService } from '../inbox/draft.service';
-import {
-  Draft,
-  MessageWithEmails,
-  SendMessageRequest,
-} from '../../model/message.model';
+import { Draft, SendMessageRequest } from '../../model/message.model';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { CurrentUserService } from '../../shared/services/current-user.service';
 import { LS_USER_ID } from '../../shared/api/model/local-storage-variables';
-import { MessageService } from 'primeng/api';
 import { ToastService } from '../../shared/services/toast.service';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Component({
   selector: 'app-new-email',
@@ -32,7 +27,6 @@ import { ToastService } from '../../shared/services/toast.service';
 })
 export class NewEmailComponent implements OnInit {
   public formGroup!: FormGroup;
-
   public contactsCurrentUser: Contact[] = [];
   public filteredContacts: Contact[] = [];
 
@@ -52,9 +46,8 @@ export class NewEmailComponent implements OnInit {
     this.baseApiService
       .getContacts()
       .pipe(
-        tap((contacts: Contact[]) => {
+        tap((contacts) => {
           this.contactsCurrentUser = contacts;
-          this.filteredContacts = contacts;
         })
       )
       .subscribe();
@@ -77,7 +70,7 @@ export class NewEmailComponent implements OnInit {
         };
         this.baseApiService.sendMessage(message).subscribe(() => {
           this.toastService.showToast({
-            text: 'Message sent',
+            summary: 'Message sent',
             severity: 'success',
           });
           this.router.navigate(['/inbox']);
@@ -103,6 +96,11 @@ export class NewEmailComponent implements OnInit {
         senderId: 0,
       } as Draft);
     }
+
+    this.toastService.showToast({
+      summary: 'Draft saved',
+      severity: 'secondary',
+    });
   }
 
   public search(event: AutoCompleteCompleteEvent) {

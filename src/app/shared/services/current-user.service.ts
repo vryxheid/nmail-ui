@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact } from '../../model/contact.model';
 import { UserReduced } from '../../model/user.model';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,7 @@ import { UserReduced } from '../../model/user.model';
 export class CurrentUserService {
   private user: UserReduced | null = null;
   private contacts: Contact[] | null = null;
+
   constructor() {}
 
   public get currentUser() {
@@ -15,18 +17,18 @@ export class CurrentUserService {
   }
 
   public get contactsCurrentUser() {
-    return this.contacts;
+    return this.contacts ?? [];
   }
 
   public setCurrentUser(user: UserReduced) {
-    return (this.user = user);
+    this.user = user;
   }
 
   public setContactsCurrentUser(contacts: Contact[]) {
-    return (this.contacts = contacts);
+    this.contacts = contacts;
   }
 
-  public getContactByEmail(email: string) {
+  public getContactByEmail(email: string): Contact | undefined {
     return this.contacts?.find((contact) => contact.email === email);
   }
 }

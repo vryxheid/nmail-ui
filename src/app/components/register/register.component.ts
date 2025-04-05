@@ -71,7 +71,7 @@ export class RegisterComponent {
         .pipe(
           tap(() => {
             this.toastService.showToast({
-              text: 'User registered successfully',
+              summary: 'User registered successfully',
               severity: 'success',
             });
             this.router.navigate(['/login']);

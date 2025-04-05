@@ -7,12 +7,20 @@
           <!-- <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" /> -->
 
           <div class="subject">{{ message.subject }}</div>
-          <div class="sender-info">
+          <div class="sende-info contact-info">
             from:
-            <span class="sender-info-value">{{
-              contact
-                ? contact.name + " (" + contact.email + ")"
+            <span class="contact-info-value">{{
+              senderContact
+                ? senderContact.name + " (" + senderContact.email + ")"
                 : message.senderEmail
+            }}</span>
+          </div>
+          <div class="recipient-info contact-info">
+            to:
+            <span class="contact-info-value">{{
+              recipientContact
+                ? recipientContact.name + " (" + recipientContact.email + ")"
+                : message.recipientEmail
             }}</span>
           </div>
         </div>

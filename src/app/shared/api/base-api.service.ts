@@ -123,7 +123,7 @@ export class BaseApiService {
     registerUserRequest: RegisterUserRequest
   ): Observable<User> {
     return this.fetchOrMock(
-      this.httpClient.post<User>('/auth/user', registerUserRequest),
+      this.httpClient.post<User>('/auth/register', registerUserRequest),
       of(MockData.mockUsers).pipe(
         map((data: any[]) => data[0]!),
         map(
@@ -160,10 +160,11 @@ export class BaseApiService {
       tap((user: UserReduced) => {
         this.currentUserService.setCurrentUser(user);
         this.toastService.showToast({
-          text: 'Logged in successfully',
+          summary: 'Logged in successfully',
           severity: 'success',
         });
       }),
+      switchMap(() => this.getContacts(true)),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           const errorMessage = 'Wrong email or password';
@@ -261,7 +262,7 @@ export class BaseApiService {
   //====================================================================================================================
   public getContacts(refresh = false): Observable<Contact[]> {
     // If contacts were already fetched, no need to fetch again, except explicit request to refresh data
-    if (this.currentUserService.contactsCurrentUser && !refresh) {
+    if (this.currentUserService.contactsCurrentUser.length > 0 && !refresh) {
       return of(this.currentUserService.contactsCurrentUser);
     } else {
       return this.fetchOrMock(

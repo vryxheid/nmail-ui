@@ -9,6 +9,7 @@ import { DraftService } from '../inbox/draft.service';
 import { Draft } from '../../model/message.model';
 import { UserReduced } from '../../model/user.model';
 import { CurrentUserService } from '../../shared/services/current-user.service';
+import { BaseApiService } from '../../shared/api/base-api.service';
 
 @Component({
   selector: 'app-draft-view',
@@ -23,6 +24,7 @@ export class DraftViewComponent implements OnInit {
   constructor(
     private draftService: DraftService,
     private currentUserService: CurrentUserService,
+    private baseApiService: BaseApiService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
